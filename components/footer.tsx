@@ -49,6 +49,11 @@ export function Footer() {
                   {mounted ? t("common.service") : "Service"}
                 </Link>
               </li>
+              <li>
+                <Link href="/privacy" className="text-secondary-foreground hover:text-primary">
+                  Privacy Policy
+                </Link>
+              </li>
             </ul>
           </div>
           <div className="space-y-4">
