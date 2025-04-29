@@ -1,37 +1,12 @@
 "use client"
-import { useRouter, usePathname } from "next/navigation"
+
 import { Button } from "@/components/ui/button"
 import { Check, Globe } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { useLocale } from "next-intl"
-
-const languages = [
-  { code: "en", name: "English" },
-  { code: "es", name: "Español" },
-  { code: "ru", name: "Русский" },
-  { code: "uk", name: "Українська" },
-]
+import { languages, useLanguage } from "@/contexts/language-context"
 
 export function LanguageSwitcher() {
-  const router = useRouter()
-  const pathname = usePathname()
-  const locale = useLocale()
-
-  const handleLanguageChange = (language: string) => {
-    // Remove the current locale from the pathname if it exists
-    const segments = pathname.split("/")
-    const isLocaleInPath = languages.some((lang) => segments[1] === lang.code)
-
-    let newPathname
-    if (isLocaleInPath) {
-      segments[1] = language
-      newPathname = segments.join("/")
-    } else {
-      newPathname = `/${language}${pathname}`
-    }
-
-    router.push(newPathname)
-  }
+  const { language, setLanguage } = useLanguage()
 
   return (
     <DropdownMenu>
@@ -42,14 +17,10 @@ export function LanguageSwitcher() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        {languages.map((language) => (
-          <DropdownMenuItem
-            key={language.code}
-            onClick={() => handleLanguageChange(language.code)}
-            className="cursor-pointer"
-          >
-            <span className="mr-2">{language.name}</span>
-            {locale === language.code && <Check className="h-4 w-4 ml-auto" />}
+        {languages.map((lang) => (
+          <DropdownMenuItem key={lang.code} onClick={() => setLanguage(lang.code)} className="cursor-pointer">
+            <span className="mr-2">{lang.name}</span>
+            {language === lang.code && <Check className="h-4 w-4 ml-auto" />}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>

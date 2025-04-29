@@ -5,10 +5,10 @@ import { MobileNav } from "./mobile-nav"
 import { ThemeToggle } from "./theme-toggle"
 import { LanguageSwitcher } from "./language-switcher"
 import { Logo } from "./logo"
-import { useTranslations } from "next-intl"
+import { useLanguage } from "@/contexts/language-context"
 
 export function Header() {
-  const t = useTranslations("common")
+  const { t } = useLanguage()
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -20,37 +20,37 @@ export function Header() {
         </div>
         <nav className="hidden md:flex items-center gap-6">
           <Link href="/" className="text-sm font-medium transition-colors hover:text-primary uppercase tracking-wider">
-            {t("home")}
+            {t("common.home")}
           </Link>
           <Link
             href="/inventory"
             className="text-sm font-medium transition-colors hover:text-primary uppercase tracking-wider"
           >
-            {t("inventory")}
+            {t("common.inventory")}
           </Link>
           <Link
             href="/financing"
             className="text-sm font-medium transition-colors hover:text-primary uppercase tracking-wider"
           >
-            {t("financing")}
+            {t("common.financing")}
           </Link>
           <Link
             href="/service"
             className="text-sm font-medium transition-colors hover:text-primary uppercase tracking-wider"
           >
-            {t("service")}
+            {t("common.service")}
           </Link>
           <Link
             href="/sell"
             className="text-sm font-medium transition-colors hover:text-primary uppercase tracking-wider"
           >
-            {t("sell")}
+            {t("common.sell")}
           </Link>
           <Link
             href="/contact"
             className="text-sm font-medium transition-colors hover:text-primary uppercase tracking-wider"
           >
-            {t("contact")}
+            {t("common.contact")}
           </Link>
         </nav>
         <div className="flex items-center gap-2">

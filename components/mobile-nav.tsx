@@ -8,11 +8,11 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { ThemeToggle } from "./theme-toggle"
 import { LanguageSwitcher } from "./language-switcher"
 import { Logo } from "./logo"
-import { useTranslations } from "next-intl"
+import { useLanguage } from "@/contexts/language-context"
 
 export function MobileNav() {
   const [open, setOpen] = useState(false)
-  const t = useTranslations("common")
+  const { t } = useLanguage()
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -34,49 +34,49 @@ export function MobileNav() {
             className="text-lg font-medium transition-colors hover:text-primary uppercase tracking-wider"
             onClick={() => setOpen(false)}
           >
-            {t("home")}
+            {t("common.home")}
           </Link>
           <Link
             href="/inventory"
             className="text-lg font-medium transition-colors hover:text-primary uppercase tracking-wider"
             onClick={() => setOpen(false)}
           >
-            {t("inventory")}
+            {t("common.inventory")}
           </Link>
           <Link
             href="/financing"
             className="text-lg font-medium transition-colors hover:text-primary uppercase tracking-wider"
             onClick={() => setOpen(false)}
           >
-            {t("financing")}
+            {t("common.financing")}
           </Link>
           <Link
             href="/service"
             className="text-lg font-medium transition-colors hover:text-primary uppercase tracking-wider"
             onClick={() => setOpen(false)}
           >
-            {t("service")}
+            {t("common.service")}
           </Link>
           <Link
             href="/sell"
             className="text-lg font-medium transition-colors hover:text-primary uppercase tracking-wider"
             onClick={() => setOpen(false)}
           >
-            {t("sell")}
+            {t("common.sell")}
           </Link>
           <Link
             href="/contact"
             className="text-lg font-medium transition-colors hover:text-primary uppercase tracking-wider"
             onClick={() => setOpen(false)}
           >
-            {t("contact")}
+            {t("common.contact")}
           </Link>
           <div className="flex items-center mt-4">
-            <span className="text-sm mr-2">{t("theme")}:</span>
+            <span className="text-sm mr-2">{t("common.theme")}:</span>
             <ThemeToggle />
           </div>
           <div className="flex items-center mt-2">
-            <span className="text-sm mr-2">{t("language")}:</span>
+            <span className="text-sm mr-2">{t("common.language")}:</span>
             <LanguageSwitcher />
           </div>
         </nav>
