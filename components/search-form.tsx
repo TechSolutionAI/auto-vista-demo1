@@ -139,7 +139,7 @@ export function SearchForm({ simplified = false }: SearchFormProps) {
             </div>
           </PopoverTrigger>
           <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0 border border-input" align="start">
-            <div className="h-80 overflow-y-auto">
+            <div className="max-h-60 overflow-y-auto">
               {makeOptions.map((option) => (
                 <div
                   key={option.value}
@@ -188,7 +188,7 @@ export function SearchForm({ simplified = false }: SearchFormProps) {
             </div>
           </PopoverTrigger>
           <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0 border border-input" align="start">
-            <div className="h-80 overflow-y-auto">
+            <div className="max-h-60 overflow-y-auto">
               {modelOptions.map((option) => (
                 <div
                   key={option.value}
@@ -237,7 +237,7 @@ export function SearchForm({ simplified = false }: SearchFormProps) {
             </div>
           </PopoverTrigger>
           <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0 border border-input" align="start">
-            <div className="h-80 overflow-y-auto">
+            <div className="max-h-60 overflow-y-auto">
               {locationOptions.map((option) => (
                 <div
                   key={option.value}
