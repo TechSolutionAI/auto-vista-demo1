@@ -7,6 +7,7 @@ import { HeroCarousel } from "@/components/hero-carousel"
 import { WhyChooseUs } from "@/components/why-choose-us"
 import { useLanguage } from "@/contexts/language-context"
 import { HelpServiceSection } from "@/components/help-service-section"
+import { GoogleMapSection } from "@/components/google-map-section"
 
 export default function Home() {
   const { t } = useLanguage()
@@ -42,6 +43,13 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="py-12">
+        <div className="container">
+          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl mb-8">{t("home.featuredVehicles")}</h2>
+          <FeaturedVehicles />
+        </div>
+      </section>
+
       <section className="py-12 bg-gradient-to-r from-gray-100 to-gray-200 dark:from-slate-800 dark:to-slate-900">
         <div className="container">
           <HelpServiceSection />
@@ -57,8 +65,8 @@ export default function Home() {
 
       <section className="py-12">
         <div className="container">
-          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl mb-8">{t("home.featuredVehicles")}</h2>
-          <FeaturedVehicles />
+          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl mb-8 text-center">Find Us</h2>
+          <GoogleMapSection />
         </div>
       </section>
     </div>

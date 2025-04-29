@@ -1,0 +1,31 @@
+"use client"
+
+import { useState, useEffect } from "react"
+
+export function GoogleMapSection() {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Show placeholder during server-side rendering
+  if (!mounted) {
+    return <div className="h-[500px] bg-muted rounded-lg"></div>
+  }
+
+  return (
+    <div className="h-[500px] rounded-lg overflow-hidden border border-border">
+      {/* Google Map iframe with the provided URL that includes a marker */}
+      <iframe
+        src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAbMq2GbvKt0koOmW7IqzJntqghocwlGw8&q=Northwest+Motors+Inc,2459 S IL Route 83,Mundelein+IL+60060"
+        width="100%"
+        height="100%"
+        style={{ border: 0 }}
+        allowFullScreen={false}
+        loading="lazy"
+        referrerPolicy="no-referrer-when-downgrade"
+      ></iframe>
+    </div>
+  )
+}
