@@ -4,26 +4,8 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
 
-// Define categories array outside the component to ensure it's always available
+// Update the categoryData array to remove Truck, add Wagon, and set the correct order
 const categoryData = [
-  {
-    id: "sedan",
-    name: "Sedan",
-    image: "/classic-blue-sedan.png",
-    url: "/inventory?category=sedan",
-  },
-  {
-    id: "suv",
-    name: "SUV",
-    image: "/urban-adventure-suv.png",
-    url: "/inventory?category=suv",
-  },
-  {
-    id: "truck",
-    name: "Truck",
-    image: "/vintage-pickup-field.png",
-    url: "/inventory?category=truck",
-  },
   {
     id: "convertible",
     name: "Convertible",
@@ -41,6 +23,24 @@ const categoryData = [
     name: "Minivan",
     image: "/suburban-adventure.png",
     url: "/inventory?category=minivan",
+  },
+  {
+    id: "sedan",
+    name: "Sedan",
+    image: "/classic-blue-sedan.png",
+    url: "/inventory?category=sedan",
+  },
+  {
+    id: "suv",
+    name: "SUV",
+    image: "/urban-adventure-suv.png",
+    url: "/inventory?category=suv",
+  },
+  {
+    id: "wagon",
+    name: "Wagon",
+    image: "/station-wagon.png",
+    url: "/inventory?category=wagon",
   },
 ]
 

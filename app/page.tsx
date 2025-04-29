@@ -6,6 +6,7 @@ import { FeaturedVehicles } from "@/components/featured-vehicles"
 import { HeroCarousel } from "@/components/hero-carousel"
 import { WhyChooseUs } from "@/components/why-choose-us"
 import { useLanguage } from "@/contexts/language-context"
+import { HelpServiceSection } from "@/components/help-service-section"
 
 export default function Home() {
   const { t } = useLanguage()
@@ -38,6 +39,12 @@ export default function Home() {
         <div className="container">
           <h2 className="text-2xl font-bold tracking-tight sm:text-3xl mb-8">{t("home.browseByCategory")}</h2>
           <VehicleCategories />
+        </div>
+      </section>
+
+      <section className="py-12 bg-gradient-to-r from-gray-100 to-gray-200 dark:from-slate-800 dark:to-slate-900">
+        <div className="container">
+          <HelpServiceSection />
         </div>
       </section>
 
