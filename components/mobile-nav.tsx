@@ -6,10 +6,13 @@ import { Menu } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { ThemeToggle } from "./theme-toggle"
+import { LanguageSwitcher } from "./language-switcher"
 import { Logo } from "./logo"
+import { useTranslations } from "next-intl"
 
 export function MobileNav() {
   const [open, setOpen] = useState(false)
+  const t = useTranslations("common")
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -31,46 +34,50 @@ export function MobileNav() {
             className="text-lg font-medium transition-colors hover:text-primary uppercase tracking-wider"
             onClick={() => setOpen(false)}
           >
-            Home
+            {t("home")}
           </Link>
           <Link
             href="/inventory"
             className="text-lg font-medium transition-colors hover:text-primary uppercase tracking-wider"
             onClick={() => setOpen(false)}
           >
-            Inventory
+            {t("inventory")}
           </Link>
           <Link
             href="/financing"
             className="text-lg font-medium transition-colors hover:text-primary uppercase tracking-wider"
             onClick={() => setOpen(false)}
           >
-            Financing
+            {t("financing")}
           </Link>
           <Link
             href="/service"
             className="text-lg font-medium transition-colors hover:text-primary uppercase tracking-wider"
             onClick={() => setOpen(false)}
           >
-            Service Center
+            {t("service")}
           </Link>
           <Link
             href="/sell"
             className="text-lg font-medium transition-colors hover:text-primary uppercase tracking-wider"
             onClick={() => setOpen(false)}
           >
-            Sell Your Vehicle
+            {t("sell")}
           </Link>
           <Link
             href="/contact"
             className="text-lg font-medium transition-colors hover:text-primary uppercase tracking-wider"
             onClick={() => setOpen(false)}
           >
-            Contact Us
+            {t("contact")}
           </Link>
           <div className="flex items-center mt-4">
-            <span className="text-sm mr-2">Theme:</span>
+            <span className="text-sm mr-2">{t("theme")}:</span>
             <ThemeToggle />
+          </div>
+          <div className="flex items-center mt-2">
+            <span className="text-sm mr-2">{t("language")}:</span>
+            <LanguageSwitcher />
           </div>
         </nav>
       </SheetContent>

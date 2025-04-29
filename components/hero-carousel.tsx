@@ -6,67 +6,45 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
-
-// Hero slide data
-const heroSlides = [
-  {
-    id: 1,
-    image: "https://imagescdn.dealercarsearch.com/DealerImages/19018/saved/770cb937.jpg",
-    title: "Find Your Perfect Vehicle",
-    description:
-      "Browse our extensive inventory of quality vehicles at competitive prices. Financing options available for all credit situations.",
-    primaryButton: {
-      text: "Browse Inventory",
-      link: "/inventory",
-    },
-    secondaryButton: {
-      text: "Financing Options",
-      link: "/financing",
-    },
-  },
-  {
-    id: 2,
-    image: "https://imagescdn.dealercarsearch.com/DealerImages/19018/saved/79215909.jpg",
-    title: "Professional Service Center",
-    description:
-      "Our factory-trained technicians provide expert maintenance and repair services to keep your vehicle running at its best.",
-    primaryButton: {
-      text: "Schedule Service",
-      link: "/service",
-    },
-    secondaryButton: {
-      text: "Learn More",
-      link: "/service",
-    },
-  },
-  {
-    id: 3,
-    image: "https://imagescdn.dealercarsearch.com/DealerImages/19018/saved/88a48cf5.jpg",
-    title: "Sell Your Vehicle",
-    description:
-      "Get a competitive offer for your vehicle with our simple and transparent process. Same-day payment available.",
-    primaryButton: {
-      text: "Get an Offer",
-      link: "/sell",
-    },
-    secondaryButton: {
-      text: "How It Works",
-      link: "/sell",
-    },
-  },
-]
+import { useTranslations } from "next-intl"
 
 export function HeroCarousel() {
+  const t = useTranslations("home.hero")
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
 
+  // Define slides with image paths but get text from translations
+  const heroSlides = [
+    {
+      id: 1,
+      image: "https://imagescdn.dealercarsearch.com/DealerImages/19018/saved/770cb937.jpg",
+      translationKey: "slide1",
+      primaryLink: "/inventory",
+      secondaryLink: "/financing",
+    },
+    {
+      id: 2,
+      image: "https://imagescdn.dealercarsearch.com/DealerImages/19018/saved/79215909.jpg",
+      translationKey: "slide2",
+      primaryLink: "/service",
+      secondaryLink: "/service",
+    },
+    {
+      id: 3,
+      image: "https://imagescdn.dealercarsearch.com/DealerImages/19018/saved/88a48cf5.jpg",
+      translationKey: "slide3",
+      primaryLink: "/sell",
+      secondaryLink: "/sell",
+    },
+  ]
+
   const nextSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev === heroSlides.length - 1 ? 0 : prev + 1))
-  }, [])
+  }, [heroSlides.length])
 
   const prevSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev === 0 ? heroSlides.length - 1 : prev - 1))
-  }, [])
+  }, [heroSlides.length])
 
   const goToSlide = useCallback((index: number) => {
     setCurrentSlide(index)
@@ -90,24 +68,45 @@ export function HeroCarousel() {
       onMouseLeave={() => setIsPaused(false)}
     >
       {/* Slides */}
-      {heroSlides.map((slide, index) => (
-        <div
-          key={slide.id}
-          className={cn(
-            "absolute inset-0 transition-opacity duration-1000",
-            index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0",
-          )}
-        >
-          <div className="absolute inset-0" />
-          <Image
-            src={slide.image || "/placeholder.svg"}
-            alt={slide.title}
-            fill
-            className="object-cover"
-            priority={index === 0}
-          />
-        </div>
-      ))}
+      {heroSlides.map((slide, index) => {
+        const slideKey = slide.translationKey
+
+        return (
+          <div
+            key={slide.id}
+            className={cn(
+              "absolute inset-0 transition-opacity duration-1000",
+              index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0",
+            )}
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-black/60 z-10" />
+            <Image
+              src={slide.image || "/placeholder.svg"}
+              alt={t(`${slideKey}.title`)}
+              fill
+              className="object-cover"
+              priority={index === 0}
+            />
+            <div className="container relative z-20 flex h-full flex-col items-start justify-center text-white">
+              <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">{t(`${slideKey}.title`)}</h1>
+              <p className="mt-4 max-w-lg text-lg text-gray-200">{t(`${slideKey}.description`)}</p>
+              <div className="mt-8 flex flex-wrap gap-4">
+                <Button asChild size="lg" className="uppercase tracking-wider">
+                  <Link href={slide.primaryLink}>{t(`${slideKey}.primaryButton`)}</Link>
+                </Button>
+                <Button
+                  asChild
+                  variant="outline"
+                  size="lg"
+                  className="border-white text-white hover:bg-white/10 uppercase tracking-wider"
+                >
+                  <Link href={slide.secondaryLink}>{t(`${slideKey}.secondaryButton`)}</Link>
+                </Button>
+              </div>
+            </div>
+          </div>
+        )
+      })}
 
       {/* Navigation Arrows */}
       <button
