@@ -2,7 +2,9 @@
 
 import { useEffect } from "react"
 
-export function AccessibilityWidget() {
+// Available sizes: "small", "medium", "large"
+// We'll use "medium" as the default size
+export function AccessibilityWidget({ size = "medium" }: { size?: "small" | "medium" | "large" }) {
   useEffect(() => {
     // Remove any existing UserWay scripts to avoid duplicates
     const existingScript = document.getElementById("userway-script")
@@ -19,6 +21,7 @@ export function AccessibilityWidget() {
 
     // Add specific UserWay configuration
     window.dispatchEvent(new Event("userway:ready"))
+
     // Update the widget_position value to ensure it's in the bottom left corner
     // In UserWay's positioning system:
     // 1 - Top Left
@@ -26,7 +29,6 @@ export function AccessibilityWidget() {
     // 3 - Top Right
     // 4 - Bottom Right
 
-    // Make sure the widget_position is set to "2" for bottom left
     window.userwaySettings = {
       siteId: 707430,
       userId: 20193,
@@ -35,7 +37,7 @@ export function AccessibilityWidget() {
       paidAi: false,
       widget_language: null,
       widget_icon_type: "2",
-      widget_icon_size: "large",
+      widget_icon_size: size, // Use the size prop to set the icon size
       widget_position: "2", // "2" corresponds to bottom left
       site_name: "nw-motors.com",
       widget_no_report: true,
@@ -52,7 +54,7 @@ export function AccessibilityWidget() {
         scriptToRemove.remove()
       }
     }
-  }, [])
+  }, [size]) // Add size to dependency array to re-run effect when size changes
 
   // No need to render our own button as UserWay will create its own
   return null

@@ -11,11 +11,11 @@ export function GoogleMapSection() {
 
   // Show placeholder during server-side rendering
   if (!mounted) {
-    return <div className="h-[500px] bg-muted rounded-lg"></div>
+    return <div className="h-[500px] bg-muted"></div>
   }
 
   return (
-    <div className="h-[500px] rounded-lg overflow-hidden border border-border">
+    <div className="h-[500px] w-full">
       {/* Google Map iframe with the provided URL that includes a marker */}
       <iframe
         src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAbMq2GbvKt0koOmW7IqzJntqghocwlGw8&q=Northwest+Motors+Inc,2459 S IL Route 83,Mundelein+IL+60060"

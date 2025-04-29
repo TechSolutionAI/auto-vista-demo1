@@ -4,11 +4,13 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import { Logo } from "./logo"
 import { useLanguage } from "@/contexts/language-context"
+import { useTheme } from "next-themes"
 
 export function Footer() {
   const { t } = useLanguage()
-  const currentYear = new Date().getFullYear()
+  const { theme, resolvedTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
+  const currentYear = new Date().getFullYear()
 
   // Only render translated content after mounting to avoid hydration mismatch
   useEffect(() => {
@@ -20,7 +22,8 @@ export function Footer() {
       <div className="container py-8 md:py-12">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           <div className="space-y-4">
-            <Logo size="md" />
+            {/* Pass isFooter prop to Logo component to ensure correct logo is used in footer */}
+            <Logo size="md" isFooter={true} />
             <p className="text-sm text-secondary-foreground">Your trusted source for quality vehicles.</p>
           </div>
           <div className="space-y-4">

@@ -10,9 +10,10 @@ interface LogoProps {
   className?: string
   size?: "sm" | "md" | "lg"
   isScrolled?: boolean
+  isFooter?: boolean
 }
 
-export function Logo({ className, size = "md", isScrolled = false }: LogoProps) {
+export function Logo({ className, size = "md", isScrolled = false, isFooter = false }: LogoProps) {
   const { theme, resolvedTheme } = useTheme()
   const pathname = usePathname()
   const [mounted, setMounted] = useState(false)
@@ -29,14 +30,21 @@ export function Logo({ className, size = "md", isScrolled = false }: LogoProps) 
 
   // Use the appropriate logo based on the theme
   // When not scrolled and on the homepage, always use the white logo for better visibility
-  // Otherwise, use the theme-based logo
+  // For footer, always use the appropriate theme-based logo
   const isDark = theme === "dark" || resolvedTheme === "dark"
 
   // Default to white logo until client-side rendering is complete
   let logoSrc = "/NWM-logo-white.png"
 
   if (mounted) {
-    logoSrc = !isScrolled && pathname === "/" ? "/NWM-logo-white.png" : isDark ? "/NWM-logo-white.png" : "/NWM-logo.png"
+    if (isFooter) {
+      // In footer, use theme-appropriate logo
+      logoSrc = isDark ? "/NWM-logo-white.png" : "/NWM-logo.png"
+    } else {
+      // For header, use the existing logic
+      logoSrc =
+        !isScrolled && pathname === "/" ? "/NWM-logo-white.png" : isDark ? "/NWM-logo-white.png" : "/NWM-logo.png"
+    }
   }
 
   return (
