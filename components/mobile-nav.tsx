@@ -9,21 +9,56 @@ import { ThemeToggle } from "./theme-toggle"
 import { LanguageSwitcher } from "./language-switcher"
 import { Logo } from "./logo"
 import { useLanguage } from "@/contexts/language-context"
+import { usePathname } from "next/navigation"
+import { cn } from "@/lib/utils"
 
 export function MobileNav() {
   const [open, setOpen] = useState(false)
   const { t } = useLanguage()
   const [mounted, setMounted] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const pathname = usePathname()
+  const isHomePage = pathname === "/"
+
+  // Handle scroll events
+  useEffect(() => {
+    const handleScroll = () => {
+      // Change header background after scrolling 50px
+      if (window.scrollY > 50) {
+        setScrolled(true)
+      } else {
+        setScrolled(false)
+      }
+    }
+
+    // Add scroll event listener
+    window.addEventListener("scroll", handleScroll)
+
+    // Initial check
+    handleScroll()
+
+    // Clean up
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+    }
+  }, [])
 
   // Only render translated content after mounting to avoid hydration mismatch
   useEffect(() => {
     setMounted(true)
   }, [])
 
+  // Determine if we should use light text (for transparent header on homepage)
+  const useLightText = !scrolled && isHomePage
+
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant="ghost" className="md:hidden" size="icon">
+        <Button
+          variant="ghost"
+          className={cn("md:hidden", useLightText ? "text-white hover:bg-white/10 hover:text-white" : "")}
+          size="icon"
+        >
           <Menu className="h-5 w-5" />
           <span className="sr-only">Toggle menu</span>
         </Button>

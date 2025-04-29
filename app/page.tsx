@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { VehicleCategories } from "@/components/vehicle-categories"
 import { FeaturedVehicles } from "@/components/featured-vehicles"
 import { HeroCarousel } from "@/components/hero-carousel"
+import { WhyChooseUs } from "@/components/why-choose-us"
 import { useLanguage } from "@/contexts/language-context"
 
 export default function Home() {
@@ -40,7 +41,14 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-secondary py-12">
+      <section className="py-12 bg-muted">
+        <div className="container">
+          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl mb-8 text-center">Why Choose Us?</h2>
+          <WhyChooseUs />
+        </div>
+      </section>
+
+      <section className="py-12">
         <div className="container">
           <h2 className="text-2xl font-bold tracking-tight sm:text-3xl mb-8">{t("home.featuredVehicles")}</h2>
           <FeaturedVehicles />

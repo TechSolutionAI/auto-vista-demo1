@@ -1,3 +1,6 @@
+"use client"
+
+import { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
@@ -26,11 +29,11 @@ const vehicles = [
     vin: "4T1BZ1HK1MU123456",
     stockNumber: "T12345",
     images: [
-      "/placeholder.svg?height=400&width=600",
-      "/placeholder.svg?height=400&width=600",
-      "/placeholder.svg?height=400&width=600",
-      "/placeholder.svg?height=400&width=600",
-      "/placeholder.svg?height=400&width=600",
+      "/toyota-camry-xse.png",
+      "/toyota-camry-xse-interior.png",
+      "/toyota-camry-xse-rear.png",
+      "/toyota-camry-xse-side.png",
+      "/toyota-camry-xse-engine.png",
     ],
     features: [
       "Leather Seats",
@@ -53,11 +56,52 @@ const vehicles = [
 ]
 
 export default function VehicleDetailPage({ params }: { params: { id: string } }) {
-  const vehicle = vehicles.find((v) => v.id === Number.parseInt(params.id))
+  // Use state to track client-side rendering
+  const [mounted, setMounted] = useState(false)
+  const [vehicle, setVehicle] = useState<any>(null)
 
+  // Set mounted to true after component mounts and find the vehicle
+  useEffect(() => {
+    setMounted(true)
+    const foundVehicle = vehicles.find((v) => v.id === Number.parseInt(params.id))
+    setVehicle(foundVehicle || null)
+  }, [params.id])
+
+  // Show a simplified placeholder during server-side rendering
+  if (!mounted) {
+    return (
+      <div className="container py-8">
+        <div className="mb-6">
+          <div className="h-6 w-32 bg-muted rounded"></div>
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2">
+            <div className="space-y-6">
+              <div className="relative aspect-video bg-muted rounded-lg"></div>
+              <div className="grid grid-cols-5 gap-2">
+                {[0, 1, 2, 3, 4].map((index) => (
+                  <div key={index} className="relative aspect-video bg-muted rounded-lg"></div>
+                ))}
+              </div>
+            </div>
+          </div>
+          <div>
+            <div className="h-[400px] bg-muted rounded-lg"></div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // If vehicle not found after mounting, show 404
   if (!vehicle) {
     notFound()
   }
+
+  // Ensure images is always an array
+  const safeImages = Array.isArray(vehicle.images) ? vehicle.images : []
+  // Ensure features is always an array
+  const safeFeatures = Array.isArray(vehicle.features) ? vehicle.features : []
 
   return (
     <div className="container py-8">
@@ -72,7 +116,7 @@ export default function VehicleDetailPage({ params }: { params: { id: string } }
           <div className="space-y-6">
             <div className="relative aspect-video overflow-hidden rounded-lg">
               <Image
-                src={vehicle.images[0] || "/placeholder.svg"}
+                src={safeImages[0] || "/placeholder.svg"}
                 alt={vehicle.title}
                 fill
                 className="object-cover"
@@ -81,7 +125,7 @@ export default function VehicleDetailPage({ params }: { params: { id: string } }
             </div>
 
             <div className="grid grid-cols-5 gap-2">
-              {vehicle.images.map((image, index) => (
+              {safeImages.map((image: string, index: number) => (
                 <div key={index} className="relative aspect-video overflow-hidden rounded-lg">
                   <Image
                     src={image || "/placeholder.svg"}
@@ -153,7 +197,7 @@ export default function VehicleDetailPage({ params }: { params: { id: string } }
               </TabsContent>
               <TabsContent value="features" className="p-4 border rounded-md mt-2">
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                  {vehicle.features.map((feature, index) => (
+                  {safeFeatures.map((feature: string, index: number) => (
                     <div key={index} className="flex items-center gap-2">
                       <div className="h-2 w-2 rounded-full bg-primary" />
                       <p className="text-sm">{feature}</p>

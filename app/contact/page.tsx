@@ -1,20 +1,40 @@
+"use client"
+
+import { useState, useEffect } from "react"
 import Image from "next/image"
 import { ContactForm } from "@/components/contact-form"
 import { Card, CardContent } from "@/components/ui/card"
 import { MapPin, Phone, Mail, Clock } from "lucide-react"
 
 export default function ContactPage() {
+  // Use state to track client-side rendering
+  const [mounted, setMounted] = useState(false)
+
+  // Set mounted to true after component mounts
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Show a simplified placeholder during server-side rendering
+  if (!mounted) {
+    return (
+      <div className="flex flex-col min-h-screen">
+        <div className="h-[300px] bg-muted"></div>
+        <div className="py-12">
+          <div className="container">
+            <div className="h-8 w-3/4 bg-muted rounded mb-6"></div>
+            <div className="h-4 w-full bg-muted rounded"></div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="flex flex-col min-h-screen">
       <section className="relative h-[300px] overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/50 z-10" />
-        <Image
-          src="/placeholder.svg?height=300&width=1920"
-          alt="Contact Us background"
-          fill
-          className="object-cover"
-          priority
-        />
+        <Image src="/contact-us.png" alt="Contact Us background" fill className="object-cover" priority />
         <div className="container relative z-20 flex h-full flex-col items-start justify-center text-white">
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Contact Us</h1>
           <p className="mt-4 max-w-lg text-lg text-gray-200">
@@ -108,69 +128,6 @@ export default function ContactPage() {
               We're conveniently located just off Highway 101, exit 25. From the exit, head east on Main Street for 0.5
               miles. Auto Vista will be on your right. Ample parking is available in our lot.
             </p>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-12">
-        <div className="container">
-          <h2 className="text-3xl font-bold tracking-tight text-center mb-8">Department Directory</h2>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            <Card>
-              <CardContent className="p-6">
-                <h3 className="text-xl font-bold mb-4">Sales Department</h3>
-                <p className="text-muted-foreground mb-4">
-                  Our sales team is ready to help you find the perfect vehicle for your needs and budget.
-                </p>
-                <div className="space-y-2">
-                  <p className="flex items-center gap-2">
-                    <Phone className="h-4 w-4 text-primary" />
-                    <span>(555) 123-4568</span>
-                  </p>
-                  <p className="flex items-center gap-2">
-                    <Mail className="h-4 w-4 text-primary" />
-                    <span>sales@autovista.com</span>
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-6">
-                <h3 className="text-xl font-bold mb-4">Service Department</h3>
-                <p className="text-muted-foreground mb-4">
-                  Our factory-trained technicians provide expert maintenance and repair services for all makes and
-                  models.
-                </p>
-                <div className="space-y-2">
-                  <p className="flex items-center gap-2">
-                    <Phone className="h-4 w-4 text-primary" />
-                    <span>(555) 123-4569</span>
-                  </p>
-                  <p className="flex items-center gap-2">
-                    <Mail className="h-4 w-4 text-primary" />
-                    <span>service@autovista.com</span>
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-6">
-                <h3 className="text-xl font-bold mb-4">Finance Department</h3>
-                <p className="text-muted-foreground mb-4">
-                  Our finance experts can help you explore financing options and secure competitive rates.
-                </p>
-                <div className="space-y-2">
-                  <p className="flex items-center gap-2">
-                    <Phone className="h-4 w-4 text-primary" />
-                    <span>(555) 123-4570</span>
-                  </p>
-                  <p className="flex items-center gap-2">
-                    <Mail className="h-4 w-4 text-primary" />
-                    <span>finance@autovista.com</span>
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
           </div>
         </div>
       </section>

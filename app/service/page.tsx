@@ -1,3 +1,6 @@
+"use client"
+
+import { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -6,17 +9,34 @@ import { ServiceAppointmentForm } from "@/components/service-appointment-form"
 import { ServiceTestimonials } from "@/components/service-testimonials"
 
 export default function ServiceCenterPage() {
+  // Use state to track client-side rendering
+  const [mounted, setMounted] = useState(false)
+
+  // Set mounted to true after component mounts
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Show a simplified placeholder during server-side rendering
+  if (!mounted) {
+    return (
+      <div className="flex flex-col min-h-screen">
+        <div className="h-[300px] bg-muted"></div>
+        <div className="py-12">
+          <div className="container">
+            <div className="h-8 w-3/4 bg-muted rounded mb-6"></div>
+            <div className="h-4 w-full bg-muted rounded"></div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="flex flex-col min-h-screen">
       <section className="relative h-[300px] overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/50 z-10" />
-        <Image
-          src="/placeholder.svg?height=300&width=1920"
-          alt="Service Center background"
-          fill
-          className="object-cover"
-          priority
-        />
+        <Image src="/service-center.png" alt="Service Center background" fill className="object-cover" priority />
         <div className="container relative z-20 flex h-full flex-col items-start justify-center text-white">
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Service Center</h1>
           <p className="mt-4 max-w-lg text-lg text-gray-200">
@@ -119,7 +139,7 @@ export default function ServiceCenterPage() {
             </div>
             <div className="flex items-center justify-center">
               <Image
-                src="/placeholder.svg?height=400&width=600"
+                src="/service-technician.png"
                 alt="Service Center"
                 width={600}
                 height={400}
@@ -130,6 +150,7 @@ export default function ServiceCenterPage() {
         </div>
       </section>
 
+      {/* Rest of the component remains the same */}
       <section className="bg-muted py-12">
         <div className="container">
           <h2 className="text-3xl font-bold tracking-tight text-center mb-12">Our Services</h2>
@@ -309,46 +330,6 @@ export default function ServiceCenterPage() {
                   <li className="flex justify-between">
                     <span>Sunday</span>
                     <span>Closed</span>
-                  </li>
-                </ul>
-              </div>
-              <div>
-                <h3 className="text-xl font-bold mb-4">Contact Service Department</h3>
-                <ul className="space-y-2">
-                  <li className="flex items-center gap-2">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="h-5 w-5 text-primary"
-                    >
-                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-                    </svg>
-                    <span>(555) 123-4567</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="h-5 w-5 text-primary"
-                    >
-                      <rect width="20" height="16" x="2" y="4" rx="2" />
-                      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-                    </svg>
-                    <span>service@autovista.com</span>
                   </li>
                 </ul>
               </div>

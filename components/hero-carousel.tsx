@@ -59,7 +59,7 @@ export function HeroCarousel() {
 
   return (
     <div
-      className="relative h-[70vh] overflow-hidden"
+      className="relative h-[70vh] overflow-hidden -mt-16"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
@@ -79,13 +79,13 @@ export function HeroCarousel() {
             className="object-cover"
             priority={index === 0}
           />
-          <div className="absolute inset-0 bg-black/30" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/10" />
         </div>
       ))}
 
       {/* Search Form Container */}
       <div className="absolute inset-0 z-20 flex items-center justify-center">
-        <div className="w-full max-w-4xl px-4">
+        <div className="w-[80%] px-4">
           <div className="bg-background/90 backdrop-blur-sm p-8 rounded-lg shadow-lg">
             <h2 className="text-2xl md:text-3xl font-bold text-center mb-6">
               {mounted ? t("search.title") : "Find Your Dream Car"}

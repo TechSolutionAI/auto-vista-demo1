@@ -5,8 +5,13 @@ import { Button } from "@/components/ui/button"
 import { Check, Globe } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { languages, useLanguage } from "@/contexts/language-context"
+import { cn } from "@/lib/utils"
 
-export function LanguageSwitcher() {
+interface LanguageSwitcherProps {
+  className?: string
+}
+
+export function LanguageSwitcher({ className }: LanguageSwitcherProps) {
   const { language, setLanguage } = useLanguage()
   const [mounted, setMounted] = useState(false)
 
@@ -17,7 +22,7 @@ export function LanguageSwitcher() {
 
   if (!mounted) {
     return (
-      <Button variant="outline" size="icon" className="h-9 w-9 rounded-full">
+      <Button variant="outline" size="icon" className={cn("h-9 w-9 rounded-full", className)}>
         <Globe className="h-[1.2rem] w-[1.2rem]" />
         <span className="sr-only">Switch language</span>
       </Button>
@@ -27,7 +32,7 @@ export function LanguageSwitcher() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon" className="h-9 w-9 rounded-full">
+        <Button variant="outline" size="icon" className={cn("h-9 w-9 rounded-full", className)}>
           <Globe className="h-[1.2rem] w-[1.2rem]" />
           <span className="sr-only">Switch language</span>
         </Button>

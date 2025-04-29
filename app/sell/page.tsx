@@ -1,3 +1,6 @@
+"use client"
+
+import { useState, useEffect } from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -5,17 +8,34 @@ import { SellVehicleForm } from "@/components/sell-vehicle-form"
 import { SellVehicleSteps } from "@/components/sell-vehicle-steps"
 
 export default function SellVehiclePage() {
+  // Use state to track client-side rendering
+  const [mounted, setMounted] = useState(false)
+
+  // Set mounted to true after component mounts
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Show a simplified placeholder during server-side rendering
+  if (!mounted) {
+    return (
+      <div className="flex flex-col min-h-screen">
+        <div className="h-[300px] bg-muted"></div>
+        <div className="py-12">
+          <div className="container">
+            <div className="h-8 w-3/4 bg-muted rounded mb-6"></div>
+            <div className="h-4 w-full bg-muted rounded"></div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="flex flex-col min-h-screen">
       <section className="relative h-[300px] overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/50 z-10" />
-        <Image
-          src="/placeholder.svg?height=300&width=1920"
-          alt="Sell Your Vehicle background"
-          fill
-          className="object-cover"
-          priority
-        />
+        <Image src="/sell-vehicle.png" alt="Sell Your Vehicle background" fill className="object-cover" priority />
         <div className="container relative z-20 flex h-full flex-col items-start justify-center text-white">
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Sell Your Vehicle</h1>
           <p className="mt-4 max-w-lg text-lg text-gray-200">
@@ -24,6 +44,7 @@ export default function SellVehiclePage() {
         </div>
       </section>
 
+      {/* Rest of the component remains the same */}
       <section className="py-12">
         <div className="container">
           <div className="grid gap-8 md:grid-cols-2">
@@ -108,33 +129,6 @@ export default function SellVehiclePage() {
                     </p>
                   </div>
                 </div>
-                <div className="flex items-start gap-3">
-                  <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="h-5 w-5"
-                    >
-                      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                      <circle cx="9" cy="7" r="4" />
-                      <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-                      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="font-bold">Expert Assistance</h3>
-                    <p className="text-muted-foreground">
-                      Our team handles all paperwork and administrative tasks, making the process smooth and efficient.
-                    </p>
-                  </div>
-                </div>
               </div>
               <div className="mt-8">
                 <Button asChild size="lg">
@@ -144,7 +138,7 @@ export default function SellVehiclePage() {
             </div>
             <div className="flex items-center justify-center">
               <Image
-                src="/placeholder.svg?height=400&width=600"
+                src="/sell-vehicle-image.png"
                 alt="Sell Your Vehicle"
                 width={600}
                 height={400}

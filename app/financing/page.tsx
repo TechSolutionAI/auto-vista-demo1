@@ -1,3 +1,6 @@
+"use client"
+
+import { useState, useEffect } from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -6,17 +9,43 @@ import { FinancingFAQ } from "@/components/financing-faq"
 import { FinancingSteps } from "@/components/financing-steps"
 
 export default function FinancingPage() {
+  // Use state to track client-side rendering
+  const [mounted, setMounted] = useState(false)
+
+  // Set mounted to true after component mounts
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Show a simplified placeholder during server-side rendering
+  if (!mounted) {
+    return (
+      <div className="flex flex-col min-h-screen">
+        <div className="h-[300px] bg-muted"></div>
+        <div className="py-12">
+          <div className="container">
+            <div className="grid gap-8 md:grid-cols-2">
+              <div className="space-y-6">
+                <div className="h-8 w-3/4 bg-muted rounded"></div>
+                <div className="h-4 w-full bg-muted rounded"></div>
+                <div className="h-4 w-full bg-muted rounded"></div>
+                <div className="h-[400px] bg-muted rounded"></div>
+              </div>
+              <div className="flex items-center justify-center">
+                <div className="h-[400px] w-full bg-muted rounded"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="flex flex-col min-h-screen">
       <section className="relative h-[300px] overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/50 z-10" />
-        <Image
-          src="/placeholder.svg?height=300&width=1920"
-          alt="Financing background"
-          fill
-          className="object-cover"
-          priority
-        />
+        <Image src="/financing-hero.png" alt="Financing background" fill className="object-cover" priority />
         <div className="container relative z-20 flex h-full flex-col items-start justify-center text-white">
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Financing Options</h1>
           <p className="mt-4 max-w-lg text-lg text-gray-200">
@@ -38,7 +67,7 @@ export default function FinancingPage() {
             </div>
             <div className="flex items-center justify-center">
               <Image
-                src="/placeholder.svg?height=400&width=600"
+                src="/financing-calculator.png"
                 alt="Financing illustration"
                 width={600}
                 height={400}

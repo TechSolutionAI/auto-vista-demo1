@@ -69,11 +69,11 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     const keys = key.split(".")
 
     // Get the current language translations
-    const langTranslations = translations[language as keyof typeof translations]
+    const langTranslations = translations[language as keyof typeof translations] || translations.en
 
     // Navigate through the nested structure
     let value = keys.reduce((obj, key) => {
-      return obj?.[key]
+      return obj?.[key] || null
     }, langTranslations as any)
 
     // If the key doesn't exist, return the key itself
