@@ -69,7 +69,7 @@ export function SearchForm() {
         <Input type="number" placeholder="Max Price" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} />
       </div>
       <div className="space-y-2">
-        <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-white uppercase tracking-wider">
+        <Button type="submit" className="w-full uppercase tracking-wider">
           <Search className="mr-2 h-4 w-4" />
           Search
         </Button>

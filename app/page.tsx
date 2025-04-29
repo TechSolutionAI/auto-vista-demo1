@@ -24,14 +24,14 @@ export default function Home() {
             all credit situations.
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
-            <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-white uppercase tracking-wider">
+            <Button asChild size="lg" className="uppercase tracking-wider">
               <Link href="/inventory">Browse Inventory</Link>
             </Button>
             <Button
               asChild
               variant="outline"
               size="lg"
-              className="border-primary text-primary hover:bg-primary/10 uppercase tracking-wider"
+              className="border-white text-white hover:bg-white/10 uppercase tracking-wider"
             >
               <Link href="/financing">Financing Options</Link>
             </Button>
@@ -39,7 +39,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-muted py-12">
+      <section className="bg-secondary py-12">
         <div className="container">
           <h2 className="text-2xl font-bold tracking-tight sm:text-3xl mb-8">Quick Search</h2>
           <SearchForm />
@@ -53,7 +53,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-muted py-12">
+      <section className="bg-secondary py-12">
         <div className="container">
           <h2 className="text-2xl font-bold tracking-tight sm:text-3xl mb-8">Featured Vehicles</h2>
           <FeaturedVehicles />

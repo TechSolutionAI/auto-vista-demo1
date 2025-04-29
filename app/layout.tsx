@@ -8,8 +8,8 @@ import { ThemeProvider } from "@/components/theme-provider"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata = {
-  title: "Auto Vista - Inventory Management",
-  description: "Find your perfect vehicle with Auto Vista",
+  title: "Northwest Motors - Premium Vehicles",
+  description: "Find your perfect vehicle with Northwest Motors",
     generator: 'v0.dev'
 }
 
@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <Header />
           <main>{children}</main>
           <Footer />

@@ -4,7 +4,9 @@ import { useState } from "react"
 import Link from "next/link"
 import { Menu } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
+import { ThemeToggle } from "./theme-toggle"
+import { Logo } from "./logo"
 
 export function MobileNav() {
   const [open, setOpen] = useState(false)
@@ -18,6 +20,11 @@ export function MobileNav() {
         </Button>
       </SheetTrigger>
       <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+        <SheetHeader>
+          <SheetTitle className="flex items-center justify-center">
+            <Logo size="sm" />
+          </SheetTitle>
+        </SheetHeader>
         <nav className="flex flex-col gap-4 mt-8">
           <Link
             href="/"
@@ -61,6 +68,10 @@ export function MobileNav() {
           >
             Contact Us
           </Link>
+          <div className="flex items-center mt-4">
+            <span className="text-sm mr-2">Theme:</span>
+            <ThemeToggle />
+          </div>
         </nav>
       </SheetContent>
     </Sheet>
