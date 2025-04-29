@@ -48,7 +48,7 @@ export function FeaturedVehicles() {
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       {featuredVehicles.map((vehicle) => (
         <Link key={vehicle.id} href={`/inventory/${vehicle.id}`}>
-          <Card className="h-full overflow-hidden transition-all hover:shadow-lg">
+          <Card className="h-full overflow-hidden transition-all hover:shadow-lg bg-card border-border/50">
             <div className="relative">
               <Badge className="absolute right-2 top-2 z-10">{vehicle.badge}</Badge>
               <div className="relative h-48 w-full">

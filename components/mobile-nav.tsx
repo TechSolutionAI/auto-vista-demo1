@@ -21,42 +21,42 @@ export function MobileNav() {
         <nav className="flex flex-col gap-4 mt-8">
           <Link
             href="/"
-            className="text-lg font-medium transition-colors hover:text-primary"
+            className="text-lg font-medium transition-colors hover:text-primary uppercase tracking-wider"
             onClick={() => setOpen(false)}
           >
             Home
           </Link>
           <Link
             href="/inventory"
-            className="text-lg font-medium transition-colors hover:text-primary"
+            className="text-lg font-medium transition-colors hover:text-primary uppercase tracking-wider"
             onClick={() => setOpen(false)}
           >
             Inventory
           </Link>
           <Link
             href="/financing"
-            className="text-lg font-medium transition-colors hover:text-primary"
+            className="text-lg font-medium transition-colors hover:text-primary uppercase tracking-wider"
             onClick={() => setOpen(false)}
           >
             Financing
           </Link>
           <Link
             href="/service"
-            className="text-lg font-medium transition-colors hover:text-primary"
+            className="text-lg font-medium transition-colors hover:text-primary uppercase tracking-wider"
             onClick={() => setOpen(false)}
           >
             Service Center
           </Link>
           <Link
             href="/sell"
-            className="text-lg font-medium transition-colors hover:text-primary"
+            className="text-lg font-medium transition-colors hover:text-primary uppercase tracking-wider"
             onClick={() => setOpen(false)}
           >
             Sell Your Vehicle
           </Link>
           <Link
             href="/contact"
-            className="text-lg font-medium transition-colors hover:text-primary"
+            className="text-lg font-medium transition-colors hover:text-primary uppercase tracking-wider"
             onClick={() => setOpen(false)}
           >
             Contact Us

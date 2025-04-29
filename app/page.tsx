@@ -9,7 +9,7 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       <section className="relative h-[500px] overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/50 z-10" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-black/60 z-10" />
         <Image
           src="/placeholder.svg?height=500&width=1920"
           alt="Hero background"
@@ -24,10 +24,15 @@ export default function Home() {
             all credit situations.
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
-            <Button asChild size="lg">
+            <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-white uppercase tracking-wider">
               <Link href="/inventory">Browse Inventory</Link>
             </Button>
-            <Button asChild variant="outline" size="lg">
+            <Button
+              asChild
+              variant="outline"
+              size="lg"
+              className="border-primary text-primary hover:bg-primary/10 uppercase tracking-wider"
+            >
               <Link href="/financing">Financing Options</Link>
             </Button>
           </div>

@@ -45,7 +45,7 @@ export function VehicleCategories() {
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
       {categories.map((category) => (
         <Link key={category.id} href={category.url} className="group flex flex-col items-center text-center">
-          <div className="relative mb-3 h-32 w-full overflow-hidden rounded-lg">
+          <div className="relative mb-3 h-32 w-full overflow-hidden rounded-sm border border-border/50">
             <Image
               src={category.image || "/placeholder.svg"}
               alt={category.name}
