@@ -5,6 +5,9 @@ import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { ThemeProvider } from "@/components/theme-provider"
 import { LanguageProvider } from "@/contexts/language-context"
+import { ScrollToTop } from "@/components/scroll-to-top"
+import { AccessibilityWidget } from "@/components/accessibility-widget"
+import { UserwayStyles } from "@/components/userway-styles"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -27,6 +30,9 @@ export default function RootLayout({
             <Header />
             <main className="pt-16">{children}</main>
             <Footer />
+            <ScrollToTop />
+            <AccessibilityWidget />
+            <UserwayStyles />
           </LanguageProvider>
         </ThemeProvider>
       </body>

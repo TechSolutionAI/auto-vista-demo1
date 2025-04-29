@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { notFound } from "next/navigation"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -52,23 +52,147 @@ const vehicles = [
     description:
       "This beautiful Toyota Camry XSE is in excellent condition with low mileage. Features include leather seats, navigation, sunroof, and much more!",
   },
-  // Other vehicles would be here
+  {
+    id: 2,
+    title: "2020 Honda Accord Sport",
+    price: 26495,
+    mileage: 22150,
+    year: 2020,
+    make: "Honda",
+    model: "Accord",
+    trim: "Sport",
+    exteriorColor: "Modern Steel",
+    interiorColor: "Black",
+    fuelType: "Gasoline",
+    transmission: "Automatic",
+    engine: "1.5L Turbo 4-Cylinder",
+    vin: "1HGCV1F34LA123456",
+    stockNumber: "H54321",
+    images: [
+      "/honda-accord-sport.png",
+      "/honda-accord-sport.png",
+      "/honda-accord-sport.png",
+      "/honda-accord-sport.png",
+      "/honda-accord-sport.png",
+    ],
+    features: [
+      "Bluetooth",
+      "Backup Camera",
+      "Apple CarPlay",
+      "Android Auto",
+      "Heated Seats",
+      "Alloy Wheels",
+      "LED Headlights",
+      "Keyless Entry",
+      "Push Button Start",
+      "Dual-Zone Climate Control",
+    ],
+    description:
+      "This Honda Accord Sport is a great value with its sporty styling and excellent fuel economy. Loaded with technology features including Apple CarPlay and Android Auto.",
+  },
+  {
+    id: 3,
+    title: "2019 Ford F-150 XLT",
+    price: 32995,
+    mileage: 35680,
+    year: 2019,
+    make: "Ford",
+    model: "F-150",
+    trim: "XLT",
+    exteriorColor: "Race Red",
+    interiorColor: "Gray",
+    fuelType: "Gasoline",
+    transmission: "Automatic",
+    engine: "5.0L V8",
+    vin: "1FTEW1EP2KFA98765",
+    stockNumber: "F67890",
+    images: [
+      "/ford-f150-xlt.png",
+      "/ford-f150-xlt.png",
+      "/ford-f150-xlt.png",
+      "/ford-f150-xlt.png",
+      "/ford-f150-xlt.png",
+    ],
+    features: [
+      "4WD",
+      "Tow Package",
+      "Crew Cab",
+      "Bluetooth",
+      "Backup Camera",
+      "Trailer Hitch",
+      "Bed Liner",
+      "Running Boards",
+      "Power Windows",
+      "Power Locks",
+    ],
+    description:
+      "This Ford F-150 XLT is ready for work or play with its powerful V8 engine and 4WD capability. Features a spacious crew cab and tow package.",
+  },
+  {
+    id: 4,
+    title: "2022 Chevrolet Equinox LT",
+    price: 29995,
+    mileage: 8750,
+    year: 2022,
+    make: "Chevrolet",
+    model: "Equinox",
+    trim: "LT",
+    exteriorColor: "Silver Ice",
+    interiorColor: "Jet Black",
+    fuelType: "Gasoline",
+    transmission: "Automatic",
+    engine: "1.5L Turbo 4-Cylinder",
+    vin: "2GNAXKEV3N6123456",
+    stockNumber: "C24680",
+    images: [
+      "/chevrolet-equinox-lt.png",
+      "/chevrolet-equinox-lt.png",
+      "/chevrolet-equinox-lt.png",
+      "/chevrolet-equinox-lt.png",
+      "/chevrolet-equinox-lt.png",
+    ],
+    features: [
+      "AWD",
+      "Heated Seats",
+      "Remote Start",
+      "Apple CarPlay",
+      "Android Auto",
+      "Backup Camera",
+      "Bluetooth",
+      "Keyless Entry",
+      "Power Liftgate",
+      "Roof Rails",
+    ],
+    description:
+      "This nearly new Chevrolet Equinox LT features AWD for all-weather capability and comes loaded with technology and comfort features.",
+  },
 ]
 
 export default function VehicleDetailPage({ params }: { params: { id: string } }) {
-  // Use state to track client-side rendering
+  const router = useRouter()
   const [mounted, setMounted] = useState(false)
   const [vehicle, setVehicle] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
 
   // Set mounted to true after component mounts and find the vehicle
   useEffect(() => {
     setMounted(true)
-    const foundVehicle = vehicles.find((v) => v.id === Number.parseInt(params.id))
-    setVehicle(foundVehicle || null)
-  }, [params.id])
+    const id = Number.parseInt(params.id)
 
-  // Show a simplified placeholder during server-side rendering
-  if (!mounted) {
+    // Find the vehicle in our mock data
+    const foundVehicle = vehicles.find((v) => v.id === id)
+
+    setVehicle(foundVehicle || null)
+    setLoading(false)
+
+    // If vehicle not found and we're not loading anymore, redirect to inventory
+    if (!foundVehicle && mounted && !loading) {
+      router.push("/inventory")
+    }
+  }, [params.id, router, mounted, loading])
+
+  // Show a loading placeholder during server-side rendering or while loading
+  if (!mounted || loading) {
     return (
       <div className="container py-8">
         <div className="mb-6">
@@ -93,9 +217,26 @@ export default function VehicleDetailPage({ params }: { params: { id: string } }
     )
   }
 
-  // If vehicle not found after mounting, show 404
+  // If vehicle not found after mounting and loading is complete, show a message
   if (!vehicle) {
-    notFound()
+    return (
+      <div className="container py-8">
+        <div className="mb-6">
+          <Link href="/inventory" className="text-sm text-muted-foreground hover:underline">
+            ← Back to Inventory
+          </Link>
+        </div>
+        <div className="text-center py-12">
+          <h1 className="text-2xl font-bold mb-4">Vehicle Not Found</h1>
+          <p className="text-muted-foreground mb-6">
+            The vehicle you're looking for doesn't exist or has been removed.
+          </p>
+          <Button asChild>
+            <Link href="/inventory">Browse Inventory</Link>
+          </Button>
+        </div>
+      </div>
+    )
   }
 
   // Ensure images is always an array
@@ -255,7 +396,7 @@ export default function VehicleDetailPage({ params }: { params: { id: string } }
                     <span className="font-medium">Email:</span> sales@autovista.com
                   </p>
                   <p className="text-sm">
-                    <span className="font-medium">Address:</span> 123 Auto Lane, Carville, CA 90210
+                    <span className="font-medium">Address:</span> 2459 S IL Route 83, Mundelein, IL 60060
                   </p>
                 </div>
               </div>

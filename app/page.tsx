@@ -8,6 +8,9 @@ import { WhyChooseUs } from "@/components/why-choose-us"
 import { useLanguage } from "@/contexts/language-context"
 import { HelpServiceSection } from "@/components/help-service-section"
 import { GoogleMapSection } from "@/components/google-map-section"
+import { MaintenanceBanner } from "@/components/maintenance-banner"
+import { ScrollToTop } from "@/components/scroll-to-top"
+// Remove the import for AccessibilityWidget since it's already in the layout
 
 export default function Home() {
   const { t } = useLanguage()
@@ -63,12 +66,20 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Maintenance Banner Section */}
+      <MaintenanceBanner />
+
       <section className="py-12">
         <div className="container">
           <h2 className="text-2xl font-bold tracking-tight sm:text-3xl mb-8 text-center">Find Us</h2>
           <GoogleMapSection />
         </div>
       </section>
+
+      {/* Scroll to Top Button */}
+      <ScrollToTop />
+
+      {/* AccessibilityWidget is now only in the layout */}
     </div>
   )
 }
