@@ -54,18 +54,45 @@ export function Footer() {
           <div className="space-y-4">
             <h3 className="text-sm font-bold">{mounted ? t("footer.contact") : "Contact"}</h3>
             <ul className="space-y-2 text-sm text-secondary-foreground">
-              <li>123 Auto Lane</li>
-              <li>Carville, CA 90210</li>
-              <li>(555) 123-4567</li>
+              <li>2459 S IL Route 83</li>
+              <li>Mundelein, IL 60060</li>
+              <li>+1 888-870-2148</li>
               <li>info@northwestmotors.com</li>
             </ul>
           </div>
           <div className="space-y-4">
             <h3 className="text-sm font-bold">{mounted ? t("footer.hours") : "Hours"}</h3>
-            <ul className="space-y-2 text-sm text-secondary-foreground">
-              <li>{mounted ? t("footer.weekdays") : "Monday - Friday: 9am - 7pm"}</li>
-              <li>{mounted ? t("footer.saturday") : "Saturday: 9am - 5pm"}</li>
-              <li>{mounted ? t("footer.sunday") : "Sunday: Closed"}</li>
+            <ul className="space-y-1 text-sm text-secondary-foreground">
+              {/* For simplicity, we'll use the direct values instead of translations for now */}
+              {/* In a real app, you would update all language files with these new keys */}
+              <li className="flex justify-between">
+                <span>Monday:</span>
+                <span>10:00 am - 7:00 pm</span>
+              </li>
+              <li className="flex justify-between">
+                <span>Tuesday:</span>
+                <span>10:00 am - 7:00 pm</span>
+              </li>
+              <li className="flex justify-between">
+                <span>Wednesday:</span>
+                <span>10:00 am - 7:00 pm</span>
+              </li>
+              <li className="flex justify-between">
+                <span>Thursday:</span>
+                <span>10:00 am - 7:00 pm</span>
+              </li>
+              <li className="flex justify-between">
+                <span>Friday:</span>
+                <span>10:00 am - 7:00 pm</span>
+              </li>
+              <li className="flex justify-between">
+                <span>Saturday:</span>
+                <span>10:00 am - 5:00 pm</span>
+              </li>
+              <li className="flex justify-between">
+                <span>Sunday:</span>
+                <span>Closed</span>
+              </li>
             </ul>
           </div>
         </div>

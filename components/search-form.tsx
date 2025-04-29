@@ -115,7 +115,7 @@ export function SearchForm({ simplified = false }: SearchFormProps) {
               )}
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-full p-0" align="start">
+          <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="center">
             <div className="max-h-60 overflow-y-auto p-2">
               {makeOptions.map((option) => (
                 <div key={option.value} className="flex items-center space-x-2 rounded-md p-2 hover:bg-muted">
@@ -149,7 +149,7 @@ export function SearchForm({ simplified = false }: SearchFormProps) {
               )}
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-full p-0" align="start">
+          <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="center">
             <div className="max-h-60 overflow-y-auto p-2">
               {modelOptions.map((option) => (
                 <div key={option.value} className="flex items-center space-x-2 rounded-md p-2 hover:bg-muted">
@@ -183,7 +183,7 @@ export function SearchForm({ simplified = false }: SearchFormProps) {
               )}
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-full p-0" align="start">
+          <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="center">
             <div className="max-h-60 overflow-y-auto p-2">
               {locationOptions.map((option) => (
                 <div key={option.value} className="flex items-center space-x-2 rounded-md p-2 hover:bg-muted">
