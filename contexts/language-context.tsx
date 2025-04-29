@@ -2,12 +2,6 @@
 
 import { createContext, useState, useContext, useEffect, type ReactNode } from "react"
 
-// Import all language files
-import en from "@/locales/en.json"
-import es from "@/locales/es.json"
-import ru from "@/locales/ru.json"
-import uk from "@/locales/uk.json"
-
 // Define available languages
 export const languages = [
   { code: "en", name: "English" },
@@ -15,6 +9,12 @@ export const languages = [
   { code: "ru", name: "Русский" },
   { code: "uk", name: "Українська" },
 ]
+
+// Import translations
+import en from "@/locales/en"
+import es from "@/locales/es"
+import ru from "@/locales/ru"
+import uk from "@/locales/uk"
 
 // Create a map of language codes to translation objects
 const translations = {
@@ -33,10 +33,14 @@ type LanguageContextType = {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined)
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  // Initialize with browser language or default to English
+  // Initialize with default language (will be updated in useEffect)
   const [language, setLanguage] = useState("en")
+  const [isClient, setIsClient] = useState(false)
 
+  // Check if we're on the client side
   useEffect(() => {
+    setIsClient(true)
+
     // Get language from localStorage or browser settings
     const savedLanguage = localStorage.getItem("language")
     if (savedLanguage && Object.keys(translations).includes(savedLanguage)) {
@@ -50,12 +54,14 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     }
   }, [])
 
-  // Update localStorage when language changes
+  // Update localStorage when language changes (only on client)
   useEffect(() => {
-    localStorage.setItem("language", language)
-    // Update HTML lang attribute
-    document.documentElement.lang = language
-  }, [language])
+    if (isClient) {
+      localStorage.setItem("language", language)
+      // Update HTML lang attribute
+      document.documentElement.lang = language
+    }
+  }, [language, isClient])
 
   // Translation function
   const t = (key: string, params?: Record<string, string | number>): string => {

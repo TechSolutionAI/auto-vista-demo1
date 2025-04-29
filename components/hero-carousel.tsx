@@ -4,10 +4,19 @@ import { useState, useEffect, useCallback } from "react"
 import Image from "next/image"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { SearchForm } from "@/components/search-form"
+import { useLanguage } from "@/contexts/language-context"
 
 export function HeroCarousel() {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
+  const { t } = useLanguage()
+  const [mounted, setMounted] = useState(false)
+
+  // Only render translated content after mounting to avoid hydration mismatch
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   // Define slides with image paths
   const heroSlides = [
@@ -50,7 +59,7 @@ export function HeroCarousel() {
 
   return (
     <div
-      className="relative h-[500px] overflow-hidden"
+      className="relative h-[70vh] overflow-hidden"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
@@ -70,8 +79,21 @@ export function HeroCarousel() {
             className="object-cover"
             priority={index === 0}
           />
+          <div className="absolute inset-0 bg-black/30" />
         </div>
       ))}
+
+      {/* Search Form Container */}
+      <div className="absolute inset-0 z-20 flex items-center justify-center">
+        <div className="w-full max-w-4xl px-4">
+          <div className="bg-background/90 backdrop-blur-sm p-8 rounded-lg shadow-lg">
+            <h2 className="text-2xl md:text-3xl font-bold text-center mb-6">
+              {mounted ? t("search.title") : "Find Your Dream Car"}
+            </h2>
+            <SearchForm simplified />
+          </div>
+        </div>
+      </div>
 
       {/* Navigation Arrows */}
       <button

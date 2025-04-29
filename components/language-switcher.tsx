@@ -1,5 +1,6 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Check, Globe } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
@@ -7,6 +8,21 @@ import { languages, useLanguage } from "@/contexts/language-context"
 
 export function LanguageSwitcher() {
   const { language, setLanguage } = useLanguage()
+  const [mounted, setMounted] = useState(false)
+
+  // Only show the language switcher after mounting to avoid hydration mismatch
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) {
+    return (
+      <Button variant="outline" size="icon" className="h-9 w-9 rounded-full">
+        <Globe className="h-[1.2rem] w-[1.2rem]" />
+        <span className="sr-only">Switch language</span>
+      </Button>
+    )
+  }
 
   return (
     <DropdownMenu>

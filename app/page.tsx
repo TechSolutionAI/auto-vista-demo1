@@ -1,6 +1,6 @@
 "use client"
 
-import { SearchForm } from "@/components/search-form"
+import { useState, useEffect } from "react"
 import { VehicleCategories } from "@/components/vehicle-categories"
 import { FeaturedVehicles } from "@/components/featured-vehicles"
 import { HeroCarousel } from "@/components/hero-carousel"
@@ -8,17 +8,30 @@ import { useLanguage } from "@/contexts/language-context"
 
 export default function Home() {
   const { t } = useLanguage()
+  const [mounted, setMounted] = useState(false)
+
+  // Only render content after mounting to avoid hydration mismatch
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Show a minimal UI while loading to avoid hydration issues
+  if (!mounted) {
+    return (
+      <div className="flex flex-col min-h-screen">
+        <div className="h-[70vh]"></div>
+        <section className="py-12">
+          <div className="container">
+            <h2 className="text-2xl font-bold tracking-tight sm:text-3xl mb-8">Browse by Category</h2>
+          </div>
+        </section>
+      </div>
+    )
+  }
 
   return (
     <div className="flex flex-col min-h-screen">
       <HeroCarousel />
-
-      <section className="bg-secondary py-12">
-        <div className="container">
-          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl mb-8">{t("home.quickSearch")}</h2>
-          <SearchForm />
-        </div>
-      </section>
 
       <section className="py-12">
         <div className="container">

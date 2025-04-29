@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import { Menu } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -13,6 +13,12 @@ import { useLanguage } from "@/contexts/language-context"
 export function MobileNav() {
   const [open, setOpen] = useState(false)
   const { t } = useLanguage()
+  const [mounted, setMounted] = useState(false)
+
+  // Only render translated content after mounting to avoid hydration mismatch
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -34,49 +40,49 @@ export function MobileNav() {
             className="text-lg font-medium transition-colors hover:text-primary uppercase tracking-wider"
             onClick={() => setOpen(false)}
           >
-            {t("common.home")}
+            {mounted ? t("common.home") : "Home"}
           </Link>
           <Link
             href="/inventory"
             className="text-lg font-medium transition-colors hover:text-primary uppercase tracking-wider"
             onClick={() => setOpen(false)}
           >
-            {t("common.inventory")}
+            {mounted ? t("common.inventory") : "Inventory"}
           </Link>
           <Link
             href="/financing"
             className="text-lg font-medium transition-colors hover:text-primary uppercase tracking-wider"
             onClick={() => setOpen(false)}
           >
-            {t("common.financing")}
+            {mounted ? t("common.financing") : "Financing"}
           </Link>
           <Link
             href="/service"
             className="text-lg font-medium transition-colors hover:text-primary uppercase tracking-wider"
             onClick={() => setOpen(false)}
           >
-            {t("common.service")}
+            {mounted ? t("common.service") : "Service"}
           </Link>
           <Link
             href="/sell"
             className="text-lg font-medium transition-colors hover:text-primary uppercase tracking-wider"
             onClick={() => setOpen(false)}
           >
-            {t("common.sell")}
+            {mounted ? t("common.sell") : "Sell"}
           </Link>
           <Link
             href="/contact"
             className="text-lg font-medium transition-colors hover:text-primary uppercase tracking-wider"
             onClick={() => setOpen(false)}
           >
-            {t("common.contact")}
+            {mounted ? t("common.contact") : "Contact"}
           </Link>
           <div className="flex items-center mt-4">
-            <span className="text-sm mr-2">{t("common.theme")}:</span>
+            <span className="text-sm mr-2">{mounted ? t("common.theme") : "Theme"}:</span>
             <ThemeToggle />
           </div>
           <div className="flex items-center mt-2">
-            <span className="text-sm mr-2">{t("common.language")}:</span>
+            <span className="text-sm mr-2">{mounted ? t("common.language") : "Language"}:</span>
             <LanguageSwitcher />
           </div>
         </nav>

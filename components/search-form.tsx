@@ -2,19 +2,29 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Input } from "@/components/ui/input"
 import { Search } from "lucide-react"
+import { useLanguage } from "@/contexts/language-context"
 
-export function SearchForm() {
+interface SearchFormProps {
+  simplified?: boolean
+}
+
+export function SearchForm({ simplified = false }: SearchFormProps) {
   const router = useRouter()
+  const { t } = useLanguage()
   const [make, setMake] = useState("")
   const [model, setModel] = useState("")
-  const [minPrice, setMinPrice] = useState("")
-  const [maxPrice, setMaxPrice] = useState("")
+  const [location, setLocation] = useState("")
+  const [mounted, setMounted] = useState(false)
+
+  // Only render translated content after mounting to avoid hydration mismatch
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -22,18 +32,17 @@ export function SearchForm() {
     const params = new URLSearchParams()
     if (make) params.append("make", make)
     if (model) params.append("model", model)
-    if (minPrice) params.append("minPrice", minPrice)
-    if (maxPrice) params.append("maxPrice", maxPrice)
+    if (location) params.append("location", location)
 
     router.push(`/inventory?${params.toString()}`)
   }
 
   return (
-    <form onSubmit={handleSubmit} className="grid gap-4 md:grid-cols-5">
+    <form onSubmit={handleSubmit} className="grid gap-4 md:grid-cols-4">
       <div className="space-y-2">
         <Select value={make} onValueChange={setMake}>
           <SelectTrigger>
-            <SelectValue placeholder="Make" />
+            <SelectValue placeholder={mounted ? t("search.make") : "Make"} />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="toyota">Toyota</SelectItem>
@@ -49,7 +58,7 @@ export function SearchForm() {
       <div className="space-y-2">
         <Select value={model} onValueChange={setModel}>
           <SelectTrigger>
-            <SelectValue placeholder="Model" />
+            <SelectValue placeholder={mounted ? t("search.model") : "Model"} />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="camry">Camry</SelectItem>
@@ -63,15 +72,23 @@ export function SearchForm() {
         </Select>
       </div>
       <div className="space-y-2">
-        <Input type="number" placeholder="Min Price" value={minPrice} onChange={(e) => setMinPrice(e.target.value)} />
-      </div>
-      <div className="space-y-2">
-        <Input type="number" placeholder="Max Price" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} />
+        <Select value={location} onValueChange={setLocation}>
+          <SelectTrigger>
+            <SelectValue placeholder={mounted ? t("search.location") : "Location"} />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="seattle">Seattle, WA</SelectItem>
+            <SelectItem value="portland">Portland, OR</SelectItem>
+            <SelectItem value="spokane">Spokane, WA</SelectItem>
+            <SelectItem value="boise">Boise, ID</SelectItem>
+            <SelectItem value="vancouver">Vancouver, WA</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
       <div className="space-y-2">
         <Button type="submit" className="w-full uppercase tracking-wider">
           <Search className="mr-2 h-4 w-4" />
-          Search
+          {mounted ? t("search.button") : "Search"}
         </Button>
       </div>
     </form>
