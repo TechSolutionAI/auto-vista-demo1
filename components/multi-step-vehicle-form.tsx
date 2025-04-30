@@ -179,8 +179,8 @@ export function MultiStepVehicleForm() {
   const [selectedModel, setSelectedModel] = useState("")
   const [selectedTrim, setSelectedTrim] = useState("")
   const [selectedDrivetrain, setSelectedDrivetrain] = useState("")
-  const [keyCount, setKeyCount] = useState("1")
-  const [loanStatus, setLoanStatus] = useState("none")
+  const [keyCount, setKeyCount] = useState<string>("")
+  const [loanStatus, setLoanStatus] = useState<string>("")
 
   // Get available models based on selected make
   const availableModels =
@@ -202,13 +202,26 @@ export function MultiStepVehicleForm() {
       ? vehicleData.drivetrains[selectedModel as keyof typeof vehicleData.drivetrains]
       : []
 
+  // Determine if we should show the detailed form
+  const shouldShowForm =
+    selectedDrivetrain ||
+    (selectedTrim && availableDrivetrains.length === 0) ||
+    (selectedModel && availableTrims.length === 0)
+
   const handleContinue = () => {
     setCurrentStep(currentStep + 1)
   }
 
+  const resetVehicleSelection = () => {
+    setSelectedYear("")
+    setSelectedMake("")
+    setSelectedModel("")
+    setSelectedTrim("")
+    setSelectedDrivetrain("")
+  }
+
   const renderVehicleDetailsForm = () => {
-    // Only show this form if model is selected
-    if (!selectedModel) return null
+    if (!shouldShowForm) return null
 
     return (
       <div className="mt-6 border-t border-border pt-6">
@@ -282,11 +295,11 @@ export function MultiStepVehicleForm() {
           <label className="block mb-2 text-sm font-medium">
             How many keys do you have? <span className="text-red-500">*</span>
           </label>
-          <Tabs defaultValue="1" value={keyCount} onValueChange={setKeyCount} className="w-full p-0">
+          <Tabs value={keyCount} onValueChange={setKeyCount} className="w-full p-0">
             <TabsList className="grid grid-cols-2 w-full rounded-lg overflow-hidden border border-border [&>*]:px-0 p-0 bg-gray-100 dark:bg-slate-800">
               <TabsTrigger
                 value="1"
-                className="h-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=inactive]:text-gray-700 dark:data-[state=inactive]:text-gray-300 rounded-l-lg"
+                className="h-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=inactive]:text-gray-700 dark:data-[state=inactive]:text-gray-300 rounded-l-lg border-r border-border"
               >
                 1
               </TabsTrigger>
@@ -304,7 +317,7 @@ export function MultiStepVehicleForm() {
           <label className="block mb-2 text-sm font-medium">
             Do you have a loan or lease on the vehicle? <span className="text-red-500">*</span>
           </label>
-          <Tabs defaultValue="none" value={loanStatus} onValueChange={setLoanStatus} className="w-full">
+          <Tabs value={loanStatus} onValueChange={setLoanStatus} className="w-full">
             <TabsList className="grid grid-cols-3 w-full rounded-lg overflow-hidden border border-border [&>*]:px-0 p-0 bg-gray-100 dark:bg-slate-800">
               <TabsTrigger
                 value="loan"
@@ -336,6 +349,16 @@ export function MultiStepVehicleForm() {
       <CardContent className="p-0">
         {/* Step 1: Vehicle Information */}
         <div className="border-b border-border p-6">
+          {shouldShowForm && (
+            <>
+              <div className="mb-6">
+                <Button variant="outline" size="sm" onClick={resetVehicleSelection} className="text-sm">
+                  ← Start Over
+                </Button>
+              </div>
+              <div className="border-t border-border mb-6"></div>
+            </>
+          )}
           <div className="flex justify-between items-center mb-6">
             <h3 className="text-lg font-medium text-primary">Vehicle Information</h3>
             <span className="text-sm text-muted-foreground">{currentStep} / 4</span>
@@ -370,125 +393,190 @@ export function MultiStepVehicleForm() {
 
           {entryMethod === "make-model" && (
             <>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-                <div>
-                  <label className="block mb-2 text-sm font-medium">Year</label>
-                  <Select value={selectedYear} onValueChange={setSelectedYear}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select Year" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {years.map((year) => (
-                        <SelectItem key={year} value={year}>
-                          {year}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
+              {!shouldShowForm ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                  <div>
+                    <label className="block mb-2 text-sm font-medium">Year</label>
+                    <Select value={selectedYear} onValueChange={setSelectedYear}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select Year" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {years.map((year) => (
+                          <SelectItem key={year} value={year}>
+                            {year}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
 
-                <div>
-                  <label className="block mb-2 text-sm font-medium">Make</label>
-                  <Select
-                    value={selectedMake}
-                    onValueChange={(value) => {
-                      setSelectedMake(value)
-                      setSelectedModel("")
-                      setSelectedTrim("")
-                    }}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="[Select Make]" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {vehicleData.makes.map((make) => (
-                        <SelectItem key={make} value={make}>
-                          {make}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div>
-                  <label className="block mb-2 text-sm font-medium">Model</label>
-                  <Select
-                    value={selectedModel}
-                    onValueChange={(value) => {
-                      setSelectedModel(value)
-                      setSelectedTrim("")
-                      setSelectedDrivetrain("")
-                    }}
-                    disabled={!selectedMake}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="[Select Model]" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {availableModels.map((model) => (
-                        <SelectItem key={model} value={model}>
-                          {model}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {selectedModel && availableTrims.length > 0 && (
-                  <div className="lg:col-start-1">
-                    <label className="block mb-2 text-sm font-medium">Trim</label>
+                  <div>
+                    <label className="block mb-2 text-sm font-medium">Make</label>
                     <Select
-                      value={selectedTrim}
+                      value={selectedMake}
                       onValueChange={(value) => {
-                        setSelectedTrim(value)
-                        setSelectedDrivetrain("")
+                        setSelectedMake(value)
+                        setSelectedModel("")
+                        setSelectedTrim("")
                       }}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="[Select Trim]" />
+                        <SelectValue placeholder="[Select Make]" />
                       </SelectTrigger>
                       <SelectContent>
-                        {availableTrims.map((trim) => (
-                          <SelectItem key={trim} value={trim}>
-                            {trim}
+                        {vehicleData.makes.map((make) => (
+                          <SelectItem key={make} value={make}>
+                            {make}
                           </SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
                   </div>
-                )}
 
-                {selectedTrim && availableDrivetrains.length > 0 && (
                   <div>
-                    <label className="block mb-2 text-sm font-medium">Drivetrain</label>
-                    <Select value={selectedDrivetrain} onValueChange={setSelectedDrivetrain}>
+                    <label className="block mb-2 text-sm font-medium">Model</label>
+                    <Select
+                      value={selectedModel}
+                      onValueChange={(value) => {
+                        setSelectedModel(value)
+                        setSelectedTrim("")
+                        setSelectedDrivetrain("")
+                      }}
+                      disabled={!selectedMake}
+                    >
                       <SelectTrigger>
-                        <SelectValue placeholder="[Select Drivetrain]" />
+                        <SelectValue placeholder="[Select Model]" />
                       </SelectTrigger>
                       <SelectContent>
-                        {availableDrivetrains.map((drivetrain) => (
-                          <SelectItem key={drivetrain} value={drivetrain}>
-                            {drivetrain}
+                        {availableModels.map((model) => (
+                          <SelectItem key={model} value={model}>
+                            {model}
                           </SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
                   </div>
-                )}
-              </div>
+
+                  {selectedModel && availableTrims.length > 0 && (
+                    <div className="lg:col-start-1">
+                      <label className="block mb-2 text-sm font-medium">Trim</label>
+                      <Select
+                        value={selectedTrim}
+                        onValueChange={(value) => {
+                          setSelectedTrim(value)
+                          setSelectedDrivetrain("")
+                        }}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="[Select Trim]" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {availableTrims.map((trim) => (
+                            <SelectItem key={trim} value={trim}>
+                              {trim}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  )}
+
+                  {selectedTrim && availableDrivetrains.length > 0 && (
+                    <div>
+                      <label className="block mb-2 text-sm font-medium">Drivetrain</label>
+                      <Select value={selectedDrivetrain} onValueChange={setSelectedDrivetrain}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="[Select Drivetrain]" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {availableDrivetrains.map((drivetrain) => (
+                            <SelectItem key={drivetrain} value={drivetrain}>
+                              {drivetrain}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  )}
+                </div>
+              ) : null}
 
               {renderVehicleDetailsForm()}
             </>
           )}
 
           {entryMethod === "license-plate" && (
-            <div className="mb-6">
-              <label className="block mb-2 text-sm font-medium">License Plate Number</label>
-              <input
-                type="text"
-                className="w-full p-2 border border-border rounded-md"
-                placeholder="Enter license plate number"
-              />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              <div>
+                <label className="block mb-2 text-sm font-medium">License Plate Number</label>
+                <input
+                  type="text"
+                  className="w-full p-2 border border-border rounded-md"
+                  placeholder="Enter license plate number"
+                />
+              </div>
+              <div>
+                <label className="block mb-2 text-sm font-medium">State</label>
+                <Select>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select State" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="AL">Alabama</SelectItem>
+                    <SelectItem value="AK">Alaska</SelectItem>
+                    <SelectItem value="AZ">Arizona</SelectItem>
+                    <SelectItem value="AR">Arkansas</SelectItem>
+                    <SelectItem value="CA">California</SelectItem>
+                    <SelectItem value="CO">Colorado</SelectItem>
+                    <SelectItem value="CT">Connecticut</SelectItem>
+                    <SelectItem value="DE">Delaware</SelectItem>
+                    <SelectItem value="FL">Florida</SelectItem>
+                    <SelectItem value="GA">Georgia</SelectItem>
+                    <SelectItem value="HI">Hawaii</SelectItem>
+                    <SelectItem value="ID">Idaho</SelectItem>
+                    <SelectItem value="IL">Illinois</SelectItem>
+                    <SelectItem value="IN">Indiana</SelectItem>
+                    <SelectItem value="IA">Iowa</SelectItem>
+                    <SelectItem value="KS">Kansas</SelectItem>
+                    <SelectItem value="KY">Kentucky</SelectItem>
+                    <SelectItem value="LA">Louisiana</SelectItem>
+                    <SelectItem value="ME">Maine</SelectItem>
+                    <SelectItem value="MD">Maryland</SelectItem>
+                    <SelectItem value="MA">Massachusetts</SelectItem>
+                    <SelectItem value="MI">Michigan</SelectItem>
+                    <SelectItem value="MN">Minnesota</SelectItem>
+                    <SelectItem value="MS">Mississippi</SelectItem>
+                    <SelectItem value="MO">Missouri</SelectItem>
+                    <SelectItem value="MT">Montana</SelectItem>
+                    <SelectItem value="NE">Nebraska</SelectItem>
+                    <SelectItem value="NV">Nevada</SelectItem>
+                    <SelectItem value="NH">New Hampshire</SelectItem>
+                    <SelectItem value="NJ">New Jersey</SelectItem>
+                    <SelectItem value="NM">New Mexico</SelectItem>
+                    <SelectItem value="NY">New York</SelectItem>
+                    <SelectItem value="NC">North Carolina</SelectItem>
+                    <SelectItem value="ND">North Dakota</SelectItem>
+                    <SelectItem value="OH">Ohio</SelectItem>
+                    <SelectItem value="OK">Oklahoma</SelectItem>
+                    <SelectItem value="OR">Oregon</SelectItem>
+                    <SelectItem value="PA">Pennsylvania</SelectItem>
+                    <SelectItem value="RI">Rhode Island</SelectItem>
+                    <SelectItem value="SC">South Carolina</SelectItem>
+                    <SelectItem value="SD">South Dakota</SelectItem>
+                    <SelectItem value="TN">Tennessee</SelectItem>
+                    <SelectItem value="TX">Texas</SelectItem>
+                    <SelectItem value="UT">Utah</SelectItem>
+                    <SelectItem value="VT">Vermont</SelectItem>
+                    <SelectItem value="VA">Virginia</SelectItem>
+                    <SelectItem value="WA">Washington</SelectItem>
+                    <SelectItem value="WV">West Virginia</SelectItem>
+                    <SelectItem value="WI">Wisconsin</SelectItem>
+                    <SelectItem value="WY">Wyoming</SelectItem>
+                    <SelectItem value="DC">District of Columbia</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           )}
 
