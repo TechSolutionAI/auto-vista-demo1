@@ -157,6 +157,18 @@ const vehicleData = {
     "Model 3": ["Standard Range", "Long Range", "Performance"],
     XC90: ["Momentum", "R-Design", "Inscription", "Recharge"],
   },
+  drivetrains: {
+    "F-150": ["4x2", "4x4"],
+    Silverado: ["2WD", "4WD"],
+    RAV4: ["FWD", "AWD"],
+    "Grand Cherokee": ["4x2", "4x4", "Quadra-Drive II", "Quadra-Trac I", "Quadra-Trac II"],
+    Wrangler: ["4x4", "4x4 Rock-Trac", "4x4 Command-Trac"],
+    Sierra: ["2WD", "4WD"],
+    Explorer: ["RWD", "4WD", "AWD"],
+    Bronco: ["4x4", "Advanced 4x4"],
+    Tacoma: ["2WD", "4WD"],
+    "4Runner": ["2WD", "4WD", "AWD"],
+  },
 }
 
 export function MultiStepVehicleForm() {
@@ -166,7 +178,9 @@ export function MultiStepVehicleForm() {
   const [selectedMake, setSelectedMake] = useState("")
   const [selectedModel, setSelectedModel] = useState("")
   const [selectedTrim, setSelectedTrim] = useState("")
+  const [selectedDrivetrain, setSelectedDrivetrain] = useState("")
   const [keyCount, setKeyCount] = useState("1")
+  const [loanStatus, setLoanStatus] = useState("none")
 
   // Get available models based on selected make
   const availableModels =
@@ -180,6 +194,14 @@ export function MultiStepVehicleForm() {
       ? vehicleData.trims[selectedModel as keyof typeof vehicleData.trims]
       : []
 
+  // Get available drivetrains based on selected model
+  const availableDrivetrains =
+    selectedModel &&
+    vehicleData.drivetrains &&
+    vehicleData.drivetrains[selectedModel as keyof typeof vehicleData.drivetrains]
+      ? vehicleData.drivetrains[selectedModel as keyof typeof vehicleData.drivetrains]
+      : []
+
   const handleContinue = () => {
     setCurrentStep(currentStep + 1)
   }
@@ -191,7 +213,7 @@ export function MultiStepVehicleForm() {
     return (
       <div className="mt-6 border-t border-border pt-6">
         <h4 className="text-lg font-medium mb-4">
-          {selectedYear} {selectedMake} {selectedModel} {selectedTrim}
+          {selectedYear} {selectedMake} {selectedModel} {selectedTrim} {selectedDrivetrain && `(${selectedDrivetrain})`}
         </h4>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
@@ -260,17 +282,17 @@ export function MultiStepVehicleForm() {
           <label className="block mb-2 text-sm font-medium">
             How many keys do you have? <span className="text-red-500">*</span>
           </label>
-          <Tabs defaultValue="1" value={keyCount} onValueChange={setKeyCount} className="w-full">
-            <TabsList className="grid grid-cols-2 w-full rounded-lg overflow-hidden border border-border [&>*]:px-0 bg-gray-100 dark:bg-slate-800">
+          <Tabs defaultValue="1" value={keyCount} onValueChange={setKeyCount} className="w-full p-0">
+            <TabsList className="grid grid-cols-2 w-full rounded-lg overflow-hidden border border-border [&>*]:px-0 p-0 bg-gray-100 dark:bg-slate-800">
               <TabsTrigger
                 value="1"
-                className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=inactive]:text-gray-700 dark:data-[state=inactive]:text-gray-300 rounded-l-lg"
+                className="h-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=inactive]:text-gray-700 dark:data-[state=inactive]:text-gray-300 rounded-l-lg"
               >
                 1
               </TabsTrigger>
               <TabsTrigger
                 value="2"
-                className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=inactive]:text-gray-700 dark:data-[state=inactive]:text-gray-300 rounded-r-lg"
+                className="h-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=inactive]:text-gray-700 dark:data-[state=inactive]:text-gray-300 rounded-r-lg"
               >
                 2+
               </TabsTrigger>
@@ -282,26 +304,28 @@ export function MultiStepVehicleForm() {
           <label className="block mb-2 text-sm font-medium">
             Do you have a loan or lease on the vehicle? <span className="text-red-500">*</span>
           </label>
-          <div className="grid grid-cols-3 gap-2">
-            <button
-              type="button"
-              className="p-2 border border-border rounded-md text-center hover:bg-gray-50 dark:hover:bg-slate-700"
-            >
-              Loan
-            </button>
-            <button
-              type="button"
-              className="p-2 border border-border rounded-md text-center hover:bg-gray-50 dark:hover:bg-slate-700"
-            >
-              Lease
-            </button>
-            <button
-              type="button"
-              className="p-2 border border-border rounded-md text-center hover:bg-gray-50 dark:hover:bg-slate-700"
-            >
-              No, I own it
-            </button>
-          </div>
+          <Tabs defaultValue="none" value={loanStatus} onValueChange={setLoanStatus} className="w-full">
+            <TabsList className="grid grid-cols-3 w-full rounded-lg overflow-hidden border border-border [&>*]:px-0 p-0 bg-gray-100 dark:bg-slate-800">
+              <TabsTrigger
+                value="loan"
+                className="h-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=inactive]:text-gray-700 dark:data-[state=inactive]:text-gray-300 rounded-l-lg border-r border-border"
+              >
+                Loan
+              </TabsTrigger>
+              <TabsTrigger
+                value="lease"
+                className="h-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=inactive]:text-gray-700 dark:data-[state=inactive]:text-gray-300 border-r border-border"
+              >
+                Lease
+              </TabsTrigger>
+              <TabsTrigger
+                value="none"
+                className="h-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=inactive]:text-gray-700 dark:data-[state=inactive]:text-gray-300 rounded-r-lg"
+              >
+                No, I own it
+              </TabsTrigger>
+            </TabsList>
+          </Tabs>
         </div>
       </div>
     )
@@ -321,23 +345,23 @@ export function MultiStepVehicleForm() {
             Get started by entering your Vehicle Identification Number (VIN), make and model, or your license plate.
           </p>
 
-          <Tabs defaultValue="make-model" className="mb-6" onValueChange={setEntryMethod}>
-            <TabsList className="grid grid-cols-3 w-full max-w-md rounded-lg overflow-hidden border border-border [&>*]:px-0 bg-gray-100 dark:bg-slate-800">
+          <Tabs defaultValue="make-model" className="mb-6 p-0" onValueChange={setEntryMethod}>
+            <TabsList className="grid grid-cols-3 w-full p-0 max-w-md rounded-lg overflow-hidden border border-border [&>*]:px-0 bg-gray-100 dark:bg-slate-800">
               <TabsTrigger
                 value="make-model"
-                className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=inactive]:text-gray-700 dark:data-[state=inactive]:text-gray-300 rounded-l-lg border-r border-border"
+                className="h-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=inactive]:text-gray-700 dark:data-[state=inactive]:text-gray-300 rounded-l-lg border-r border-border"
               >
                 Make & Model
               </TabsTrigger>
               <TabsTrigger
                 value="license-plate"
-                className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=inactive]:text-gray-700 dark:data-[state=inactive]:text-gray-300 border-r border-border"
+                className="h-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=inactive]:text-gray-700 dark:data-[state=inactive]:text-gray-300 border-r border-border"
               >
                 License Plate
               </TabsTrigger>
               <TabsTrigger
                 value="vin"
-                className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=inactive]:text-gray-700 dark:data-[state=inactive]:text-gray-300 rounded-r-lg"
+                className="h-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=inactive]:text-gray-700 dark:data-[state=inactive]:text-gray-300 rounded-r-lg"
               >
                 VIN Number
               </TabsTrigger>
@@ -393,6 +417,7 @@ export function MultiStepVehicleForm() {
                     onValueChange={(value) => {
                       setSelectedModel(value)
                       setSelectedTrim("")
+                      setSelectedDrivetrain("")
                     }}
                     disabled={!selectedMake}
                   >
@@ -412,7 +437,13 @@ export function MultiStepVehicleForm() {
                 {selectedModel && availableTrims.length > 0 && (
                   <div className="lg:col-start-1">
                     <label className="block mb-2 text-sm font-medium">Trim</label>
-                    <Select value={selectedTrim} onValueChange={setSelectedTrim}>
+                    <Select
+                      value={selectedTrim}
+                      onValueChange={(value) => {
+                        setSelectedTrim(value)
+                        setSelectedDrivetrain("")
+                      }}
+                    >
                       <SelectTrigger>
                         <SelectValue placeholder="[Select Trim]" />
                       </SelectTrigger>
@@ -420,6 +451,24 @@ export function MultiStepVehicleForm() {
                         {availableTrims.map((trim) => (
                           <SelectItem key={trim} value={trim}>
                             {trim}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
+
+                {selectedTrim && availableDrivetrains.length > 0 && (
+                  <div>
+                    <label className="block mb-2 text-sm font-medium">Drivetrain</label>
+                    <Select value={selectedDrivetrain} onValueChange={setSelectedDrivetrain}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="[Select Drivetrain]" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {availableDrivetrains.map((drivetrain) => (
+                          <SelectItem key={drivetrain} value={drivetrain}>
+                            {drivetrain}
                           </SelectItem>
                         ))}
                       </SelectContent>
