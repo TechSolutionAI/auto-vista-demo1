@@ -4,8 +4,8 @@ import { useState, useEffect } from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { SellVehicleForm } from "@/components/sell-vehicle-form"
 import { SellVehicleSteps } from "@/components/sell-vehicle-steps"
+import { MultiStepVehicleForm } from "@/components/multi-step-vehicle-form"
 
 export default function SellVehiclePage() {
   // Use state to track client-side rendering
@@ -49,10 +49,10 @@ export default function SellVehiclePage() {
         <div className="container">
           <div className="grid gap-8 md:grid-cols-2">
             <div>
-              <h2 className="text-3xl font-bold tracking-tight mb-4">Why Sell to Auto Vista?</h2>
+              <h2 className="text-3xl font-bold tracking-tight mb-4">Why Sell to NORTHWEST MOTORS?</h2>
               <p className="text-muted-foreground mb-6">
-                Selling your vehicle to Auto Vista offers numerous advantages over private sales or other dealerships.
-                Our process is designed to be simple, fair, and convenient.
+                Selling your vehicle to NORTHWEST MOTORS offers numerous advantages over private sales or other
+                dealerships. Our process is designed to be simple, fair, and convenient.
               </p>
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
@@ -206,8 +206,8 @@ export default function SellVehiclePage() {
               contact you to schedule an in-person appraisal.
             </p>
           </div>
-          <div className="max-w-3xl mx-auto">
-            <SellVehicleForm />
+          <div className="max-w-4xl mx-auto">
+            <MultiStepVehicleForm />
           </div>
         </div>
       </section>
