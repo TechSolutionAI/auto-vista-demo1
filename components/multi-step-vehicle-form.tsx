@@ -182,6 +182,19 @@ export function MultiStepVehicleForm() {
   const [keyCount, setKeyCount] = useState<string>("")
   const [loanStatus, setLoanStatus] = useState<string>("")
 
+  const [mileage, setMileage] = useState<string>("")
+  const [postalCode, setPostalCode] = useState<string>("")
+  const [exteriorColor, setExteriorColor] = useState<string>("")
+  const [interiorColor, setInteriorColor] = useState<string>("")
+  const [formErrors, setFormErrors] = useState<{
+    mileage?: string
+    postalCode?: string
+    exteriorColor?: string
+    interiorColor?: string
+    keyCount?: string
+    loanStatus?: string
+  }>({})
+
   // Get available models based on selected make
   const availableModels =
     selectedMake && vehicleData.models[selectedMake as keyof typeof vehicleData.models]
@@ -209,7 +222,60 @@ export function MultiStepVehicleForm() {
     (selectedModel && availableTrims.length === 0)
 
   const handleContinue = () => {
-    setCurrentStep(currentStep + 1)
+    if (shouldShowForm) {
+      // Validate form inputs
+      const errors: {
+        mileage?: string
+        postalCode?: string
+        exteriorColor?: string
+        interiorColor?: string
+        keyCount?: string
+        loanStatus?: string
+      } = {}
+
+      // Validate mileage
+      if (!mileage) {
+        errors.mileage = "Mileage is required"
+      } else if (Number.parseInt(mileage) < 0) {
+        errors.mileage = "Mileage cannot be negative"
+      }
+
+      // Validate postal code
+      if (!postalCode) {
+        errors.postalCode = "Postal code is required"
+      } else if (!/^\d{5}$/.test(postalCode)) {
+        errors.postalCode = "Postal code must be 5 digits"
+      }
+
+      // Validate exterior color
+      if (!exteriorColor) {
+        errors.exteriorColor = "Exterior color is required"
+      }
+
+      // Validate interior color
+      if (!interiorColor) {
+        errors.interiorColor = "Interior color is required"
+      }
+
+      // Validate key count
+      if (!keyCount) {
+        errors.keyCount = "Please select how many keys you have"
+      }
+
+      // Validate loan status
+      if (!loanStatus) {
+        errors.loanStatus = "Please select your loan status"
+      }
+
+      setFormErrors(errors)
+
+      // Only proceed if there are no errors
+      if (Object.keys(errors).length === 0) {
+        setCurrentStep(currentStep + 1)
+      }
+    } else {
+      setCurrentStep(currentStep + 1)
+    }
   }
 
   const resetVehicleSelection = () => {
@@ -236,25 +302,38 @@ export function MultiStepVehicleForm() {
             </label>
             <input
               type="number"
-              className="w-full p-2 border border-border rounded-md"
+              className={`w-full p-2 border ${formErrors.mileage ? "border-red-500" : "border-border"} rounded-md`}
               placeholder="Exact Mileage"
+              value={mileage}
+              onChange={(e) => setMileage(e.target.value)}
+              min="0"
               required
             />
+            {formErrors.mileage && <p className="text-red-500 text-xs mt-1">{formErrors.mileage}</p>}
           </div>
 
           <div>
             <label className="block mb-2 text-sm font-medium">
               Postal Code <span className="text-red-500">*</span>
             </label>
-            <input type="text" className="w-full p-2 border border-border rounded-md" placeholder="_____" required />
+            <input
+              type="text"
+              className={`w-full p-2 border ${formErrors.postalCode ? "border-red-500" : "border-border"} rounded-md`}
+              placeholder="_____"
+              value={postalCode}
+              onChange={(e) => setPostalCode(e.target.value.replace(/[^\d]/g, "").slice(0, 5))}
+              maxLength={5}
+              required
+            />
+            {formErrors.postalCode && <p className="text-red-500 text-xs mt-1">{formErrors.postalCode}</p>}
           </div>
 
           <div>
             <label className="block mb-2 text-sm font-medium">
               Exterior Color <span className="text-red-500">*</span>
             </label>
-            <Select>
-              <SelectTrigger>
+            <Select value={exteriorColor} onValueChange={setExteriorColor}>
+              <SelectTrigger className={formErrors.exteriorColor ? "border-red-500" : ""}>
                 <SelectValue placeholder="[Select]" />
               </SelectTrigger>
               <SelectContent>
@@ -268,14 +347,15 @@ export function MultiStepVehicleForm() {
                 <SelectItem value="other">Other</SelectItem>
               </SelectContent>
             </Select>
+            {formErrors.exteriorColor && <p className="text-red-500 text-xs mt-1">{formErrors.exteriorColor}</p>}
           </div>
 
           <div>
             <label className="block mb-2 text-sm font-medium">
               Interior Color <span className="text-red-500">*</span>
             </label>
-            <Select>
-              <SelectTrigger>
+            <Select value={interiorColor} onValueChange={setInteriorColor}>
+              <SelectTrigger className={formErrors.interiorColor ? "border-red-500" : ""}>
                 <SelectValue placeholder="[Select]" />
               </SelectTrigger>
               <SelectContent>
@@ -288,6 +368,7 @@ export function MultiStepVehicleForm() {
                 <SelectItem value="other">Other</SelectItem>
               </SelectContent>
             </Select>
+            {formErrors.interiorColor && <p className="text-red-500 text-xs mt-1">{formErrors.interiorColor}</p>}
           </div>
         </div>
 
@@ -296,7 +377,9 @@ export function MultiStepVehicleForm() {
             How many keys do you have? <span className="text-red-500">*</span>
           </label>
           <Tabs value={keyCount} onValueChange={setKeyCount} className="w-full p-0">
-            <TabsList className="grid grid-cols-2 w-full rounded-lg overflow-hidden border border-border [&>*]:px-0 p-0 bg-gray-100 dark:bg-slate-800">
+            <TabsList
+              className={`grid grid-cols-2 w-full rounded-lg overflow-hidden border ${formErrors.keyCount ? "border-red-500" : "border-border"} [&>*]:px-0 p-0 bg-gray-100 dark:bg-slate-800`}
+            >
               <TabsTrigger
                 value="1"
                 className="h-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=inactive]:text-gray-700 dark:data-[state=inactive]:text-gray-300 rounded-l-lg border-r border-border"
@@ -311,6 +394,7 @@ export function MultiStepVehicleForm() {
               </TabsTrigger>
             </TabsList>
           </Tabs>
+          {formErrors.keyCount && <p className="text-red-500 text-xs mt-1">{formErrors.keyCount}</p>}
         </div>
 
         <div className="mb-6">
@@ -318,7 +402,9 @@ export function MultiStepVehicleForm() {
             Do you have a loan or lease on the vehicle? <span className="text-red-500">*</span>
           </label>
           <Tabs value={loanStatus} onValueChange={setLoanStatus} className="w-full">
-            <TabsList className="grid grid-cols-3 w-full rounded-lg overflow-hidden border border-border [&>*]:px-0 p-0 bg-gray-100 dark:bg-slate-800">
+            <TabsList
+              className={`grid grid-cols-3 w-full rounded-lg overflow-hidden border ${formErrors.loanStatus ? "border-red-500" : "border-border"} [&>*]:px-0 p-0 bg-gray-100 dark:bg-slate-800`}
+            >
               <TabsTrigger
                 value="loan"
                 className="h-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=inactive]:text-gray-700 dark:data-[state=inactive]:text-gray-300 rounded-l-lg border-r border-border"
@@ -339,6 +425,7 @@ export function MultiStepVehicleForm() {
               </TabsTrigger>
             </TabsList>
           </Tabs>
+          {formErrors.loanStatus && <p className="text-red-500 text-xs mt-1">{formErrors.loanStatus}</p>}
         </div>
       </div>
     )
@@ -364,32 +451,36 @@ export function MultiStepVehicleForm() {
             <span className="text-sm text-muted-foreground">{currentStep} / 4</span>
           </div>
 
-          <p className="mb-4 text-muted-foreground">
-            Get started by entering your Vehicle Identification Number (VIN), make and model, or your license plate.
-          </p>
+          {!shouldShowForm && (
+            <p className="mb-4 text-muted-foreground">
+              Get started by entering your Vehicle Identification Number (VIN), make and model, or your license plate.
+            </p>
+          )}
 
-          <Tabs defaultValue="make-model" className="mb-6 p-0" onValueChange={setEntryMethod}>
-            <TabsList className="grid grid-cols-3 w-full p-0 max-w-md rounded-lg overflow-hidden border border-border [&>*]:px-0 bg-gray-100 dark:bg-slate-800">
-              <TabsTrigger
-                value="make-model"
-                className="h-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=inactive]:text-gray-700 dark:data-[state=inactive]:text-gray-300 rounded-l-lg border-r border-border"
-              >
-                Make & Model
-              </TabsTrigger>
-              <TabsTrigger
-                value="license-plate"
-                className="h-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=inactive]:text-gray-700 dark:data-[state=inactive]:text-gray-300 border-r border-border"
-              >
-                License Plate
-              </TabsTrigger>
-              <TabsTrigger
-                value="vin"
-                className="h-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=inactive]:text-gray-700 dark:data-[state=inactive]:text-gray-300 rounded-r-lg"
-              >
-                VIN Number
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
+          {!shouldShowForm && (
+            <Tabs defaultValue="make-model" className="mb-6 p-0" onValueChange={setEntryMethod}>
+              <TabsList className="grid grid-cols-3 w-full p-0 max-w-md rounded-lg overflow-hidden border border-border [&>*]:px-0 bg-gray-100 dark:bg-slate-800">
+                <TabsTrigger
+                  value="make-model"
+                  className="h-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=inactive]:text-gray-700 dark:data-[state=inactive]:text-gray-300 rounded-l-lg border-r border-border"
+                >
+                  Make & Model
+                </TabsTrigger>
+                <TabsTrigger
+                  value="license-plate"
+                  className="h-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=inactive]:text-gray-700 dark:data-[state=inactive]:text-gray-300 border-r border-border"
+                >
+                  License Plate
+                </TabsTrigger>
+                <TabsTrigger
+                  value="vin"
+                  className="h-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=inactive]:text-gray-700 dark:data-[state=inactive]:text-gray-300 rounded-r-lg"
+                >
+                  VIN Number
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
+          )}
 
           {entryMethod === "make-model" && (
             <>
@@ -591,7 +682,7 @@ export function MultiStepVehicleForm() {
             </div>
           )}
 
-          <Button onClick={handleContinue} className="w-full md:w-auto">
+          <Button onClick={handleContinue} className="w-full md:w-auto" disabled={!shouldShowForm}>
             Continue <ChevronRight className="ml-2 h-4 w-4" />
           </Button>
         </div>
