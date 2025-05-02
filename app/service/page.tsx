@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import Image from "next/image"
 import { ServiceAppointmentForm } from "@/components/service-appointment-form"
+import { DetailedServiceInfo } from "@/components/detailed-service-info"
 
 export default function ServiceCenterPage() {
   // Use state to track client-side rendering
@@ -142,7 +143,7 @@ export default function ServiceCenterPage() {
         </div>
       </section>
 
-      {/* Rest of the component remains the same */}
+      {/* Our Services section */}
       <section className="bg-muted py-12">
         <div className="container">
           <h2 className="text-3xl font-bold tracking-tight text-center mb-12">Our Services</h2>
@@ -225,6 +226,9 @@ export default function ServiceCenterPage() {
           </div>
         </div>
       </section>
+
+      {/* Detailed Service Information Section */}
+      <DetailedServiceInfo />
 
       <section id="schedule" className="py-12">
         <div className="container max-w-4xl mx-auto">
