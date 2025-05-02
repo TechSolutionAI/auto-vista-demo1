@@ -230,7 +230,7 @@ export default function ServiceCenterPage() {
       {/* Detailed Service Information Section */}
       <DetailedServiceInfo />
 
-      <section id="schedule" className="py-12">
+      <section id="schedule" className="bg-muted py-12">
         <div className="container max-w-4xl mx-auto">
           <ServiceAppointmentForm />
         </div>

@@ -154,7 +154,7 @@ export function ServiceAppointmentForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 rounded-lg border p-6">
+    <form onSubmit={handleSubmit} className="space-y-4 rounded-lg border p-6 bg-white">
       <h2 className="text-xl font-bold mb-6">Schedule Your Service Today</h2>
 
       <div className="grid gap-4 md:grid-cols-2">
