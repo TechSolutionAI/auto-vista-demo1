@@ -88,20 +88,20 @@ export const MONTHS_OPTIONS = [
 // Residence types
 export const RESIDENCE_TYPES = [
   { value: "", label: "Select" },
-  { value: "Own", label: "Own" },
   { value: "Rent", label: "Rent" },
-  { value: "Live with Parents", label: "Live with Parents" },
+  { value: "Own", label: "Own" },
+  { value: "Living with Famliy", label: "Living with Family" },
+  { value: "Military Housing", label: "Military Housing" },
   { value: "Other", label: "Other" },
 ]
 
 // Employer types
 export const EMPLOYER_TYPES = [
   { value: "", label: "Select" },
-  { value: "Private Sector", label: "Private Sector" },
-  { value: "Public Sector", label: "Public Sector" },
+  { value: "Full-Time", label: "Full-Time" },
+  { value: "Part-Time", label: "Part_time" },
+  { value: "Temporary", label: "Temporary" },
+  { value: "Fixed Income", label: "Fixed Income" },
   { value: "Self-Employed", label: "Self-Employed" },
-  { value: "Military", label: "Military" },
-  { value: "Retired", label: "Retired" },
-  { value: "Student", label: "Student" },
-  { value: "Other", label: "Other" },
+  { value: "Cash Income", label: "Cash Income" },
 ]

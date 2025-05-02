@@ -4,11 +4,10 @@ import type React from "react"
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Card, CardContent } from "@/components/ui/card"
-import { format } from "date-fns"
-import { CalendarIcon, ChevronRight, Pencil } from "lucide-react"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Textarea } from "@/components/ui/textarea"
+import { ChevronRight, Pencil } from "lucide-react"
 import { US_STATES, YEARS_OPTIONS, MONTHS_OPTIONS, RESIDENCE_TYPES, EMPLOYER_TYPES } from "@/lib/constants"
 
 export function CreditApplicationForm() {
@@ -52,6 +51,11 @@ export function CreditApplicationForm() {
   const [jobYears, setJobYears] = useState("")
   const [jobMonths, setJobMonths] = useState("")
 
+  // Additional Information state
+  const [additionalComments, setAdditionalComments] = useState("")
+  const [acknowledgment1, setAcknowledgment1] = useState(false)
+  const [acknowledgment2, setAcknowledgment2] = useState(false)
+
   // Form errors state
   const [formErrors, setFormErrors] = useState<{
     firstName?: string
@@ -78,6 +82,8 @@ export function CreditApplicationForm() {
     workPhone?: string
     jobYears?: string
     jobMonths?: string
+    acknowledgment1?: string
+    acknowledgment2?: string
   }>({})
 
   const handlePhoneChange = (
@@ -274,6 +280,29 @@ export function CreditApplicationForm() {
 
       // Only proceed if there are no errors
       if (Object.keys(errors).length === 0) {
+        const nextSection = 3
+        setCurrentStep(nextSection)
+        setExpandedSection(nextSection)
+      }
+    } else if (expandedSection === 3) {
+      // Validate Acknowledgment
+      const errors: {
+        acknowledgment1?: string
+        acknowledgment2?: string
+      } = {}
+
+      if (!acknowledgment1) {
+        errors.acknowledgment1 = "You must acknowledge and consent to the terms"
+      }
+
+      if (!acknowledgment2) {
+        errors.acknowledgment2 = "You must acknowledge and consent to the terms"
+      }
+
+      setFormErrors(errors)
+
+      // Only proceed if there are no errors
+      if (Object.keys(errors).length === 0) {
         setIsSubmitted(true)
         alert("Application submitted! We'll contact you shortly.")
       }
@@ -316,6 +345,11 @@ export function CreditApplicationForm() {
     setWorkPhone("")
     setJobYears("")
     setJobMonths("")
+
+    // Reset Additional Information
+    setAdditionalComments("")
+    setAcknowledgment1(false)
+    setAcknowledgment2(false)
 
     // Reset form state
     setFormErrors({})
@@ -469,26 +503,15 @@ export function CreditApplicationForm() {
             <label htmlFor="dob" className="block text-sm font-medium text-gray-700 mb-1">
               Date of Birth: <span className="text-red-500">*</span>
             </label>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  className={`w-full justify-start text-left font-normal ${formErrors.dateOfBirth ? "border-red-500" : ""}`}
-                >
-                  {dateOfBirth ? format(dateOfBirth, "MM/dd/yyyy") : <span className="text-gray-500">mm/dd/yyyy</span>}
-                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
-                <Calendar
-                  mode="single"
-                  selected={dateOfBirth}
-                  onSelect={setDateOfBirth}
-                  disabled={(date) => date > new Date() || date < new Date(1900, 0, 1)}
-                  initialFocus
-                />
-              </PopoverContent>
-            </Popover>
+            <input
+              id="dob"
+              type="date"
+              className={`w-full p-2 border ${formErrors.dateOfBirth ? "border-red-500" : "border-gray-300"} rounded-md`}
+              value={dateOfBirth ? dateOfBirth.toISOString().split("T")[0] : ""}
+              onChange={(e) => setDateOfBirth(e.target.value ? new Date(e.target.value) : undefined)}
+              max={new Date().toISOString().split("T")[0]}
+              required
+            />
             {formErrors.dateOfBirth && <p className="text-red-500 text-xs mt-1">{formErrors.dateOfBirth}</p>}
           </div>
         </div>
@@ -531,27 +554,14 @@ export function CreditApplicationForm() {
             <label htmlFor="licenseExp" className="block text-sm font-medium text-gray-700 mb-1">
               Drivers License Exp:
             </label>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline" className="w-full justify-start text-left font-normal">
-                  {licenseExpDate ? (
-                    format(licenseExpDate, "MM/dd/yyyy")
-                  ) : (
-                    <span className="text-gray-500">mm/dd/yyyy</span>
-                  )}
-                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
-                <Calendar
-                  mode="single"
-                  selected={licenseExpDate}
-                  onSelect={setLicenseExpDate}
-                  disabled={(date) => date < new Date()}
-                  initialFocus
-                />
-              </PopoverContent>
-            </Popover>
+            <input
+              id="licenseExp"
+              type="date"
+              className="w-full p-2 border border-gray-300 rounded-md"
+              value={licenseExpDate ? licenseExpDate.toISOString().split("T")[0] : ""}
+              onChange={(e) => setLicenseExpDate(e.target.value ? new Date(e.target.value) : undefined)}
+              min={new Date().toISOString().split("T")[0]}
+            />
           </div>
 
           <div>
@@ -914,6 +924,99 @@ export function CreditApplicationForm() {
 
         <div className="mt-6">
           <Button onClick={handleContinue} className="w-full md:w-auto">
+            Continue <ChevronRight className="ml-2 h-4 w-4" />
+          </Button>
+        </div>
+      </div>
+    )
+  }
+
+  const renderAcknowledgmentForm = () => {
+    return (
+      <div className="space-y-6">
+        <div className="mb-6">
+          <h3 className="text-lg font-medium mb-2">Additional Comments</h3>
+          <Textarea
+            id="additionalComments"
+            className="w-full p-3 border border-gray-300 rounded-md"
+            placeholder="Any additional information you'd like us to know..."
+            value={additionalComments}
+            onChange={(e) => setAdditionalComments(e.target.value)}
+            rows={5}
+          />
+        </div>
+
+        <div className="p-6 border border-gray-200 rounded-lg mb-6">
+          <div className="flex items-start space-x-3 mb-6">
+            <div className="flex h-6 items-center">
+              <Checkbox
+                id="acknowledgment1"
+                checked={acknowledgment1}
+                onCheckedChange={(checked) => setAcknowledgment1(checked === true)}
+                className={formErrors.acknowledgment1 ? "border-red-500" : ""}
+              />
+            </div>
+            <div className="space-y-1 leading-none">
+              <label
+                htmlFor="acknowledgment1"
+                className={`text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${
+                  formErrors.acknowledgment1 ? "text-red-500" : "text-gray-700"
+                }`}
+              >
+                ACKNOWLEDGMENT AND CONSENT:
+              </label>
+              <p className="text-sm text-gray-600">
+                I certify that the above information is complete and accurate to the best of my knowledge. Creditors
+                receiving this application will retain the application whether or not it is approved. Creditors may rely
+                on this application in deciding whether to grant the requested credit. False statements may subject me
+                to criminal penalties. I authorize the creditors to obtain credit reports about me on an ongoing basis
+                during this credit transaction and to check my credit and employment history on an ongoing basis during
+                the term of the credit transaction. If this application is approved, I authorize the creditor to give
+                credit information about me to its affiliates.
+              </p>
+            </div>
+          </div>
+          {formErrors.acknowledgment1 && (
+            <p className="text-red-500 text-xs ml-9 -mt-4">{formErrors.acknowledgment1}</p>
+          )}
+
+          <div className="flex items-start space-x-3">
+            <div className="flex h-6 items-center">
+              <Checkbox
+                id="acknowledgment2"
+                checked={acknowledgment2}
+                onCheckedChange={(checked) => setAcknowledgment2(checked === true)}
+                className={formErrors.acknowledgment2 ? "border-red-500" : ""}
+              />
+            </div>
+            <div className="space-y-1 leading-none">
+              <label
+                htmlFor="acknowledgment2"
+                className={`text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${
+                  formErrors.acknowledgment2 ? "text-red-500" : "text-gray-700"
+                }`}
+              >
+                ACKNOWLEDGMENT AND CONSENT:
+              </label>
+              <p className="text-sm text-gray-600">
+                By checking this box I hereby consent to receive text messages and/or phone calls from or on behalf of
+                Northwest Motors Inc or their employees to the mobile phone number I provided above. By opting in, I
+                understand that message and data rates may apply. This acknowledgement constitutes my written consent to
+                receive text messages to my cell phone and phone calls, including communications sent using an
+                auto-dialer or pre-recorded message. You may withdraw your consent at any time by texting "STOP" or
+                "HELP" for help. See our{" "}
+                <a href="https://nw-motors.com/privacy" className="text-blue-600 hover:underline">
+                  https://nw-motors.com/privacy
+                </a>{" "}
+                for more information.
+              </p>
+            </div>
+          </div>
+          {formErrors.acknowledgment2 && <p className="text-red-500 text-xs ml-9 mt-1">{formErrors.acknowledgment2}</p>}
+        </div>
+
+        <div className="mt-6">
+          <Button onClick={handleContinue} className="w-full md:w-auto">
             Submit Application
           </Button>
         </div>
@@ -922,89 +1025,122 @@ export function CreditApplicationForm() {
   }
 
   return (
-    <Card className="border rounded-lg overflow-hidden">
-      <CardContent className="p-0">
-        {/* Reset Button - only shown after first step and before submission */}
-        {currentStep > 1 && !isSubmitted && (
-          <div className="p-6 border-b border-border">
-            <Button variant="outline" onClick={resetAllFields} className="flex items-center">
-              <ChevronRight className="mr-2 h-4 w-4 rotate-180" />
-              Start Over
-            </Button>
-          </div>
-        )}
+    <>
+      <h2 className="text-2xl font-bold mb-6 text-gray-900">APPLY FOR CREDIT</h2>
+      <Card className="border rounded-lg overflow-hidden">
+        <CardContent className="p-0">
+          {/* Reset Button - only shown after first step and before submission */}
+          {currentStep > 1 && !isSubmitted && (
+            <div className="p-6 border-b border-border">
+              <Button variant="outline" onClick={resetAllFields} className="flex items-center">
+                <ChevronRight className="mr-2 h-4 w-4 rotate-180" />
+                Start Over
+              </Button>
+            </div>
+          )}
 
-        {/* Submission confirmation */}
-        {isSubmitted && (
-          <div className="p-6 text-center">
-            <h3 className="text-xl font-medium text-green-600 mb-4">Thank You For Your Application!</h3>
-            <p className="text-gray-700 dark:text-gray-300 mb-6">
-              We've received your credit application and will be in touch shortly to discuss financing options.
-            </p>
-            <Button
-              onClick={() => {
-                resetAllFields()
-                setIsSubmitted(false)
-              }}
-              className="w-full md:w-auto"
-            >
-              Submit Another Application
-            </Button>
-          </div>
-        )}
+          {/* Submission confirmation */}
+          {isSubmitted && (
+            <div className="p-6 text-center">
+              <h3 className="text-xl font-medium text-green-600 mb-4">Thank You For Your Application!</h3>
+              <p className="text-gray-700 dark:text-gray-300 mb-6">
+                We've received your credit application and will be in touch shortly to discuss financing options.
+              </p>
+              <Button
+                onClick={() => {
+                  resetAllFields()
+                  setIsSubmitted(false)
+                }}
+                className="w-full md:w-auto"
+              >
+                Submit Another Application
+              </Button>
+            </div>
+          )}
 
-        {/* Main form content - hidden when submitted */}
-        {!isSubmitted && (
-          <>
-            {/* Step 1: Applicant Information */}
-            <div className={`border-b border-border ${expandedSection === 1 ? "p-6" : "p-0"}`}>
-              <div className={`flex justify-between items-center ${expandedSection !== 1 ? "p-6" : ""}`}>
-                <h3 className="text-lg font-medium text-primary">Applicant Information</h3>
-                <div className="flex items-center">
-                  {expandedSection !== 1 ? (
-                    <span
-                      className="text-sm text-primary underline flex items-center cursor-pointer"
-                      onClick={() => setExpandedSection(1)}
-                    >
-                      Edit <Pencil className="h-3 w-3 ml-1" />
-                    </span>
-                  ) : (
-                    <span className="text-sm text-muted-foreground mr-2">1 / 2</span>
-                  )}
+          {/* Main form content - hidden when submitted */}
+          {!isSubmitted && (
+            <>
+              {/* Step 1: Applicant Information */}
+              <div className={`border-b border-border ${expandedSection === 1 ? "p-6" : "p-0"}`}>
+                <div className={`flex justify-between items-center ${expandedSection !== 1 ? "p-6" : ""}`}>
+                  <h3 className="text-lg font-medium text-primary">Applicant Information</h3>
+                  <div className="flex items-center">
+                    {expandedSection !== 1 ? (
+                      <span
+                        className="text-sm text-primary underline flex items-center cursor-pointer"
+                        onClick={() => setExpandedSection(1)}
+                      >
+                        Edit <Pencil className="h-3 w-3 ml-1" />
+                      </span>
+                    ) : (
+                      <span className="text-sm text-muted-foreground mr-2">1 / 3</span>
+                    )}
+                  </div>
                 </div>
+                {expandedSection === 1 && (
+                  <>
+                    <div className="w-full border-b border-gray-200 mt-4 mb-6"></div>
+                    {renderApplicantInformationForm()}
+                  </>
+                )}
               </div>
 
-              {expandedSection === 1 && renderApplicantInformationForm()}
-            </div>
-
-            {/* Step 2: Employment Information */}
-            <div className={`border-b border-border ${expandedSection === 2 ? "p-6" : "p-0"}`}>
-              <div className={`flex justify-between items-center ${expandedSection !== 2 ? "p-6" : ""}`}>
-                <h3 className="text-lg font-medium text-primary">Employment Information</h3>
-                <div className="flex items-center">
-                  {expandedSection !== 2 && currentStep >= 2 ? (
-                    <span
-                      className="text-sm text-primary underline flex items-center cursor-pointer"
-                      onClick={() => setExpandedSection(2)}
-                    >
-                      Edit <Pencil className="h-3 w-3 ml-1" />
-                    </span>
-                  ) : (
-                    <span className="text-sm text-muted-foreground mr-2">2 / 2</span>
-                  )}
+              {/* Step 2: Employment Information */}
+              <div className={`border-b border-border ${expandedSection === 2 ? "p-6" : "p-0"}`}>
+                <div className={`flex justify-between items-center ${expandedSection !== 2 ? "p-6" : ""}`}>
+                  <h3 className="text-lg font-medium text-primary">Employment Information</h3>
+                  <div className="flex items-center">
+                    {expandedSection !== 2 && currentStep >= 2 ? (
+                      <span
+                        className="text-sm text-primary underline flex items-center cursor-pointer"
+                        onClick={() => setExpandedSection(2)}
+                      >
+                        Edit <Pencil className="h-3 w-3 ml-1" />
+                      </span>
+                    ) : (
+                      <span className="text-sm text-muted-foreground mr-2">2 / 3</span>
+                    )}
+                  </div>
                 </div>
+
+                {expandedSection === 2 && (
+                  <>
+                    <div className="w-full border-b border-border mt-4 mb-6"></div>
+                    {renderEmploymentInformationForm()}
+                  </>
+                )}
               </div>
 
-              {expandedSection === 2 && (
-                <>
-                  <div className="w-full border-b border-border mt-4 mb-6"></div>
-                  {renderEmploymentInformationForm()}
-                </>
-              )}
-            </div>
-          </>
-        )}
-      </CardContent>
-    </Card>
+              {/* Step 3: Acknowledgment and Consent */}
+              <div className={`border-b border-border ${expandedSection === 3 ? "p-6" : "p-0"}`}>
+                <div className={`flex justify-between items-center ${expandedSection !== 3 ? "p-6" : ""}`}>
+                  <h3 className="text-lg font-medium text-primary">Acknowledgment and Consent</h3>
+                  <div className="flex items-center">
+                    {expandedSection !== 3 && currentStep >= 3 ? (
+                      <span
+                        className="text-sm text-primary underline flex items-center cursor-pointer"
+                        onClick={() => setExpandedSection(3)}
+                      >
+                        Edit <Pencil className="h-3 w-3 ml-1" />
+                      </span>
+                    ) : (
+                      <span className="text-sm text-muted-foreground mr-2">3 / 3</span>
+                    )}
+                  </div>
+                </div>
+
+                {expandedSection === 3 && (
+                  <>
+                    <div className="w-full border-b border-border mt-4 mb-6"></div>
+                    {renderAcknowledgmentForm()}
+                  </>
+                )}
+              </div>
+            </>
+          )}
+        </CardContent>
+      </Card>
+    </>
   )
 }
