@@ -148,8 +148,8 @@ export default function ServiceCenterPage() {
         <div className="container">
           <h2 className="text-3xl font-bold tracking-tight text-center mb-12">Our Services</h2>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            <div className="bg-gray-100 border border-gray-300 p-6 rounded-md flex flex-col items-center text-center">
-              <div className="w-16 h-16 mb-4 text-blue-600">
+            <div className="bg-card border border-border p-6 rounded-md flex flex-col items-center text-center">
+              <div className="w-16 h-16 mb-4 text-primary">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -159,15 +159,15 @@ export default function ServiceCenterPage() {
                   <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold mb-3 text-gray-700">Preventative Maintenance</h3>
-              <p className="text-gray-600">
+              <h3 className="text-xl font-bold mb-3 text-foreground">Preventative Maintenance</h3>
+              <p className="text-muted-foreground">
                 Having regularly performed maintenance on your vehicle is one of the best ways to avoid costly repairs
                 in the future and keep your vehicle riding in tip top shape.
               </p>
             </div>
 
-            <div className="bg-gray-100 border border-gray-300 p-6 rounded-md flex flex-col items-center text-center">
-              <div className="w-16 h-16 mb-4 text-blue-600">
+            <div className="bg-card border border-border p-6 rounded-md flex flex-col items-center text-center">
+              <div className="w-16 h-16 mb-4 text-primary">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -177,15 +177,15 @@ export default function ServiceCenterPage() {
                   <path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14zm-4.2-5.78v1.75l3.2-2.99L12.8 9v1.7c-3.11.43-4.35 2.56-4.8 4.7 1.11-1.5 2.58-2.18 4.8-2.18z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold mb-3 text-gray-700">Auto Diagnostics</h3>
-              <p className="text-gray-600">
+              <h3 className="text-xl font-bold mb-3 text-foreground">Auto Diagnostics</h3>
+              <p className="text-muted-foreground">
                 Want to check the health of your vehicle? Our vehicle diagnostics will plug right into your car and let
                 us know how everything is working as well as notify us of any repairs that need to be made.
               </p>
             </div>
 
-            <div className="bg-gray-100 border border-gray-300 p-6 rounded-md flex flex-col items-center text-center">
-              <div className="w-16 h-16 mb-4 text-blue-600">
+            <div className="bg-card border border-border p-6 rounded-md flex flex-col items-center text-center">
+              <div className="w-16 h-16 mb-4 text-primary">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -195,16 +195,16 @@ export default function ServiceCenterPage() {
                   <path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold mb-3 text-gray-700">Auto Repairs</h3>
-              <p className="text-gray-600">
+              <h3 className="text-xl font-bold mb-3 text-foreground">Auto Repairs</h3>
+              <p className="text-muted-foreground">
                 Maintenance lights, squeaks, squeals, rattles, rumbles, and other mechanical or electrical issues your
                 vehicle might have provide valuable clues about problems and repairs needs. Don't wait till it get worth
                 and get it fixed today.
               </p>
             </div>
 
-            <div className="bg-gray-100 border border-gray-300 p-6 rounded-md flex flex-col items-center text-center">
-              <div className="w-16 h-16 mb-4 text-blue-600">
+            <div className="bg-card border border-border p-6 rounded-md flex flex-col items-center text-center">
+              <div className="w-16 h-16 mb-4 text-primary">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -216,8 +216,8 @@ export default function ServiceCenterPage() {
                   <circle cx="16.5" cy="14.5" r="1.5" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold mb-3 text-gray-700">Wheels and Tires Service</h3>
-              <p className="text-gray-600">
+              <h3 className="text-xl font-bold mb-3 text-foreground">Wheels and Tires Service</h3>
+              <p className="text-muted-foreground">
                 It is a time to check the wheels alignment if your vehicle is pulling to the side or when your steering
                 wheel vibrates or it is off center when driving straight. Good tires and wheels alignment ensures a
                 safer and comfortable ride experience.

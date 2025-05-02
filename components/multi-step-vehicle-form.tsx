@@ -11,6 +11,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Textarea } from "@/components/ui/textarea"
 import { ChevronRight, Upload, Pencil, X } from "lucide-react"
+import { US_STATES } from "@/lib/constants"
 
 // Mock data for dropdowns
 const years = Array.from({ length: 30 }, (_, i) => (new Date().getFullYear() - i).toString())
@@ -108,6 +109,7 @@ const vehicleData = {
     Porsche: ["911", "Cayenne", "Macan", "Panamera", "Taycan", "718 Cayman", "718 Boxster"],
     Ram: ["1500", "2500", "3500", "ProMaster"],
     Tesla: ["Model 3", "Model Y", "Model S", "Model X", "Cybertruck"],
+    Volvo: ["XC90", "XC60", "XC40", "S60", "S90", "V60", 'C40  "Model S', "Model X", "Cybertruck"],
     Volvo: ["XC90", "XC60", "XC40", "S60", "S90", "V60", "C40"],
   },
   trims: {
@@ -1457,64 +1459,20 @@ export function MultiStepVehicleForm() {
                         <label className="block mb-2 text-sm font-medium">
                           State <span className="text-red-500">*</span>
                         </label>
-                        <Select value={licensePlateState} onValueChange={setLicensePlateState}>
-                          <SelectTrigger className={formErrors.licensePlateState ? "border-red-500" : ""}>
-                            <SelectValue placeholder="Select State" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="AL">Alabama</SelectItem>
-                            <SelectItem value="AK">Alaska</SelectItem>
-                            <SelectItem value="AZ">Arizona</SelectItem>
-                            <SelectItem value="AR">Arkansas</SelectItem>
-                            <SelectItem value="CA">California</SelectItem>
-                            <SelectItem value="CO">Colorado</SelectItem>
-                            <SelectItem value="CT">Connecticut</SelectItem>
-                            <SelectItem value="DE">Delaware</SelectItem>
-                            <SelectItem value="FL">Florida</SelectItem>
-                            <SelectItem value="GA">Georgia</SelectItem>
-                            <SelectItem value="HI">Hawaii</SelectItem>
-                            <SelectItem value="ID">Idaho</SelectItem>
-                            <SelectItem value="IL">Illinois</SelectItem>
-                            <SelectItem value="IN">Indiana</SelectItem>
-                            <SelectItem value="IA">Iowa</SelectItem>
-                            <SelectItem value="KS">Kansas</SelectItem>
-                            <SelectItem value="KY">Kentucky</SelectItem>
-                            <SelectItem value="LA">Louisiana</SelectItem>
-                            <SelectItem value="ME">Maine</SelectItem>
-                            <SelectItem value="MD">Maryland</SelectItem>
-                            <SelectItem value="MA">Massachusetts</SelectItem>
-                            <SelectItem value="MI">Michigan</SelectItem>
-                            <SelectItem value="MN">Minnesota</SelectItem>
-                            <SelectItem value="MS">Mississippi</SelectItem>
-                            <SelectItem value="MO">Missouri</SelectItem>
-                            <SelectItem value="MT">Montana</SelectItem>
-                            <SelectItem value="NE">Nebraska</SelectItem>
-                            <SelectItem value="NV">Nevada</SelectItem>
-                            <SelectItem value="NH">New Hampshire</SelectItem>
-                            <SelectItem value="NJ">New Jersey</SelectItem>
-                            <SelectItem value="NM">New Mexico</SelectItem>
-                            <SelectItem value="NY">New York</SelectItem>
-                            <SelectItem value="NC">North Carolina</SelectItem>
-                            <SelectItem value="ND">North Dakota</SelectItem>
-                            <SelectItem value="OH">Ohio</SelectItem>
-                            <SelectItem value="OK">Oklahoma</SelectItem>
-                            <SelectItem value="OR">Oregon</SelectItem>
-                            <SelectItem value="PA">Pennsylvania</SelectItem>
-                            <SelectItem value="RI">Rhode Island</SelectItem>
-                            <SelectItem value="SC">South Carolina</SelectItem>
-                            <SelectItem value="SD">South Dakota</SelectItem>
-                            <SelectItem value="TN">Tennessee</SelectItem>
-                            <SelectItem value="TX">Texas</SelectItem>
-                            <SelectItem value="UT">Utah</SelectItem>
-                            <SelectItem value="VT">Vermont</SelectItem>
-                            <SelectItem value="VA">Virginia</SelectItem>
-                            <SelectItem value="WA">Washington</SelectItem>
-                            <SelectItem value="WV">West Virginia</SelectItem>
-                            <SelectItem value="WI">Wisconsin</SelectItem>
-                            <SelectItem value="WY">Wyoming</SelectItem>
-                            <SelectItem value="DC">District of Columbia</SelectItem>
-                          </SelectContent>
-                        </Select>
+                        <select
+                          id="licensePlateState"
+                          className={`w-full rounded-md border ${formErrors.licensePlateState ? "border-red-500" : "border-border"} px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                          value={licensePlateState}
+                          onChange={(e) => setLicensePlateState(e.target.value)}
+                          required
+                        >
+                          <option value="">Select State</option>
+                          {US_STATES.map((state) => (
+                            <option key={state.value} value={state.value}>
+                              {state.label}
+                            </option>
+                          ))}
+                        </select>
                         {formErrors.licensePlateState && (
                           <p className="text-red-500 text-xs mt-1">{formErrors.licensePlateState}</p>
                         )}
@@ -1554,7 +1512,7 @@ export function MultiStepVehicleForm() {
                   {expandedSection !== 2 && currentStep >= 2 ? (
                     <span
                       className="text-sm text-primary underline flex items-center cursor-pointer"
-                      onClick={() => setExpandedSection(1)}
+                      onClick={() => setExpandedSection(2)}
                     >
                       Edit <Pencil className="h-3 w-3 ml-1" />
                     </span>

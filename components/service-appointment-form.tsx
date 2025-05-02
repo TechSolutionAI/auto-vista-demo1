@@ -102,7 +102,7 @@ export function ServiceAppointmentForm() {
 
   if (submitted) {
     return (
-      <div className="rounded-lg border bg-card p-6 text-card-foreground shadow-sm">
+      <div className="rounded-lg border border-border bg-card p-6 text-card-foreground shadow-sm">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="rounded-full bg-primary/10 p-3">
             <svg
@@ -154,7 +154,7 @@ export function ServiceAppointmentForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 rounded-lg border p-6 bg-white">
+    <form onSubmit={handleSubmit} className="space-y-4 rounded-lg border border-border p-6 bg-card">
       <h2 className="text-xl font-bold mb-6">Schedule Your Service Today</h2>
 
       <div className="grid gap-4 md:grid-cols-2">
@@ -326,9 +326,7 @@ export function ServiceAppointmentForm() {
         </div>
       </div>
 
-      <Button type="submit" className="bg-blue-600 hover:bg-blue-700">
-        Submit
-      </Button>
+      <Button type="submit">Submit</Button>
     </form>
   )
 }
