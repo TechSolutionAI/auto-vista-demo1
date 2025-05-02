@@ -14,7 +14,7 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata = {
   title: "Northwest Motors - Premium Vehicles",
   description: "Find your perfect vehicle with Northwest Motors",
-    generator: 'v0.dev'
+  generator: "v0.dev",
 }
 
 export default function RootLayout({
