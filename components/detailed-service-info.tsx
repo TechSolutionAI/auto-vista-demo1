@@ -2,11 +2,11 @@ import Image from "next/image"
 
 export function DetailedServiceInfo() {
   return (
-    <section className="py-12">
+    <section className="py-16 bg-background">
       <div className="container">
         {/* Preventative Maintenance Section */}
-        <div className="grid gap-8 md:grid-cols-2 mb-16">
-          <div className="flex items-center justify-center dark:bg-gray-800">
+        <div className="grid gap-12 md:grid-cols-2 mb-20">
+          <div className="flex items-center justify-center">
             <Image
               src="https://imagescdn.dealercarsearch.com/DealerImages/19018/28912/service1.png"
               alt="Mechanics working on a red car"
@@ -16,8 +16,8 @@ export function DetailedServiceInfo() {
             />
           </div>
           <div>
-            <h2 className="text-3xl font-bold tracking-tight mb-6 text-blue-600">PREVENTATIVE MAINTENANCE</h2>
-            <div className="border-t border-border pt-4">
+            <h2 className="text-3xl font-bold tracking-tight mb-6 text-gold">PREVENTATIVE MAINTENANCE</h2>
+            <div className="border-t border-gold/30 pt-6">
               <p className="text-foreground mb-4">
                 Preventive maintenance may seem like an unnecessary car expense, but it often involves matters that
                 you'll have to take care of sooner or later, and paying for them sooner will often be a less expensive
@@ -35,10 +35,10 @@ export function DetailedServiceInfo() {
         </div>
 
         {/* Auto Diagnostics Section */}
-        <div className="grid gap-8 md:grid-cols-2 mb-16">
+        <div className="grid gap-12 md:grid-cols-2 mb-20">
           <div>
-            <h2 className="text-3xl font-bold tracking-tight mb-6 text-blue-600">AUTO DIAGNOSTICS</h2>
-            <div className="border-t border-border pt-4">
+            <h2 className="text-3xl font-bold tracking-tight mb-6 text-gold">AUTO DIAGNOSTICS</h2>
+            <div className="border-t border-gold/30 pt-6">
               <p className="text-foreground mb-4">
                 The computer in your vehicle is in constant contact with all of the sensors and most of the electronic
                 devices in your vehicle. Anytime the computer detects an abnormal sensor reading, or inoperative sensor,
@@ -59,7 +59,7 @@ export function DetailedServiceInfo() {
               </p>
             </div>
           </div>
-          <div className="flex flex-col items-center justify-center space-y-6 dark:bg-gray-800">
+          <div className="flex flex-col items-center justify-center space-y-6">
             <Image
               src="https://imagescdn.dealercarsearch.com/DealerImages/19018/28912/service2.png"
               alt="Diagnostic laptop connected to a car"
@@ -71,8 +71,8 @@ export function DetailedServiceInfo() {
         </div>
 
         {/* Auto Repairs Section */}
-        <div className="grid gap-8 md:grid-cols-2 mb-16">
-          <div className="flex items-center justify-center dark:bg-gray-800">
+        <div className="grid gap-12 md:grid-cols-2 mb-20">
+          <div className="flex items-center justify-center">
             <Image
               src="https://imagescdn.dealercarsearch.com/DealerImages/19018/28912/service3.jpg"
               alt="Various car parts and maintenance items"
@@ -82,8 +82,8 @@ export function DetailedServiceInfo() {
             />
           </div>
           <div>
-            <h2 className="text-3xl font-bold tracking-tight mb-6 text-blue-600">AUTO REPAIRS</h2>
-            <div className="border-t border-border pt-4">
+            <h2 className="text-3xl font-bold tracking-tight mb-6 text-gold">AUTO REPAIRS</h2>
+            <div className="border-t border-gold/30 pt-6">
               <p className="text-foreground mb-4">
                 Spending few hundred dollars annually on maintenance and repairs may sound like a lot, but it's nothing
                 compared to the added expense of buying a new car, especially if your current car is paid off. In fact,
@@ -102,10 +102,10 @@ export function DetailedServiceInfo() {
         </div>
 
         {/* Wheels and Tires Service Section */}
-        <div className="grid gap-8 md:grid-cols-2">
+        <div className="grid gap-12 md:grid-cols-2">
           <div>
-            <h2 className="text-3xl font-bold tracking-tight mb-6 text-blue-600">WHEELS AND TIRES SERVICE</h2>
-            <div className="border-t border-border pt-4">
+            <h2 className="text-3xl font-bold tracking-tight mb-6 text-gold">WHEELS AND TIRES SERVICE</h2>
+            <div className="border-t border-gold/30 pt-6">
               <p className="text-foreground mb-4">
                 The tires are the only thing between the vehicle and the road. When they are properly inflated and in
                 good condition, the handling, stability and safety of the vehicle will be maximized. Conversely, when
@@ -126,7 +126,7 @@ export function DetailedServiceInfo() {
               </p>
             </div>
           </div>
-          <div className="flex flex-col items-center justify-center space-y-6 dark:bg-gray-800">
+          <div className="flex flex-col items-center justify-center space-y-6">
             <Image
               src="https://imagescdn.dealercarsearch.com/DealerImages/19018/28912/service4.png"
               alt="Tire alignment and balancing equipment"

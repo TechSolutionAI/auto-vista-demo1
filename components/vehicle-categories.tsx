@@ -3,101 +3,69 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
+import { Card, CardContent } from "@/components/ui/card"
+import { useLanguage } from "@/contexts/language-context"
 
-// Update the categoryData array to remove Truck, add Wagon, and set the correct order
-const categoryData = [
+// Sample categories data
+const categoriesData = [
   {
-    id: "convertible",
-    name: "Convertible",
-    image: "/red-convertible-coastal-drive.png",
-    url: "/inventory?category=convertible",
+    id: "luxury-sedans",
+    title: "Luxury Sedans",
+    count: 48,
+    image: "/luxury-sedan.jpg",
   },
   {
-    id: "hatchback",
-    name: "Hatchback",
-    image: "/urban-hatchback-commute.png",
-    url: "/inventory?category=hatchback",
+    id: "sports-cars",
+    title: "Sports Cars",
+    count: 36,
+    image: "/sports-car.jpg",
   },
   {
-    id: "minivan",
-    name: "Minivan",
-    image: "/suburban-adventure.png",
-    url: "/inventory?category=minivan",
+    id: "luxury-suvs",
+    title: "Luxury SUVs",
+    count: 52,
+    image: "/luxury-suv.jpg",
   },
   {
-    id: "sedan",
-    name: "Sedan",
-    image: "/classic-blue-sedan.png",
-    url: "/inventory?category=sedan",
-  },
-  {
-    id: "suv",
-    name: "SUV",
-    image: "/urban-adventure-suv.png",
-    url: "/inventory?category=suv",
-  },
-  {
-    id: "wagon",
-    name: "Wagon",
-    image: "/station-wagon.png",
-    url: "/inventory?category=wagon",
+    id: "convertibles",
+    title: "Convertibles",
+    count: 24,
+    image: "/convertible.jpg",
   },
 ]
 
 export function VehicleCategories() {
-  // Use state to track client-side rendering
+  const { t } = useLanguage()
   const [mounted, setMounted] = useState(false)
 
-  // Initialize categories state with the data
-  const [categories, setCategories] = useState(categoryData)
-
-  // Set mounted to true after component mounts
+  // Only render translated content after mounting to avoid hydration mismatch
   useEffect(() => {
     setMounted(true)
   }, [])
 
-  // Show placeholder during server-side rendering
-  if (!mounted) {
-    return (
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-        {[0, 1, 2, 3, 4, 5].map((index) => (
-          <div key={index} className="flex flex-col items-center text-center">
-            <div className="relative mb-3 h-32 w-full overflow-hidden rounded-md border border-border bg-muted"></div>
-            <div className="h-6 w-24 bg-muted rounded"></div>
-          </div>
-        ))}
-      </div>
-    )
-  }
-
-  // Ensure categories is always an array
-  const safeCategories = Array.isArray(categories) ? categories : []
-
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-      {safeCategories.map((category, index) => {
-        // Ensure each category has all required properties
-        const safeCategory = {
-          id: category?.id || `category-${index}`,
-          name: category?.name || "Category",
-          image: category?.image || "/placeholder.svg",
-          url: category?.url || "/inventory",
-        }
-
-        return (
-          <Link key={safeCategory.id} href={safeCategory.url} className="group flex flex-col items-center text-center">
-            <div className="relative mb-3 h-32 w-full overflow-hidden rounded-md border border-border">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {categoriesData.map((category) => (
+        <Link key={category.id} href={`/inventory?category=${category.id}`}>
+          <Card className="bg-darkgray border-border overflow-hidden h-64 relative group">
+            <div className="absolute inset-0">
               <Image
-                src={safeCategory.image || "/placeholder.svg"}
-                alt={safeCategory.name}
+                src={
+                  category.image || `/placeholder.svg?height=400&width=600&query=${category.title.replace(" ", "+")}`
+                }
+                alt={category.title}
                 fill
-                className="object-cover transition-transform group-hover:scale-105"
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
             </div>
-            <h3 className="text-lg font-medium">{safeCategory.name}</h3>
-          </Link>
-        )
-      })}
+            <CardContent className="absolute bottom-0 left-0 right-0 p-6 text-white">
+              <h3 className="font-bold text-xl mb-1">{category.title}</h3>
+              <p className="text-sm text-gold">{category.count} vehicles</p>
+            </CardContent>
+          </Card>
+        </Link>
+      ))}
     </div>
   )
 }

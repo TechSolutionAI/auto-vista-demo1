@@ -3,63 +3,40 @@
 import { useState, useEffect } from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { CreditApplicationForm } from "@/components/credit-application-form"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { FinancingCalculator } from "@/components/financing-calculator"
+import { FinancingFAQ } from "@/components/financing-faq"
+import { FinancingSteps } from "@/components/financing-steps"
 
 export default function FinancingPage() {
   // Use state to track client-side rendering
   const [mounted, setMounted] = useState(false)
-
-  // Calculator states
-  const [loanAmount, setLoanAmount] = useState("10000")
-  const [interestRate, setInterestRate] = useState("22")
-  const [downPayment, setDownPayment] = useState("0")
-  const [loanTerm, setLoanTerm] = useState("55")
-  const [monthlyPayment, setMonthlyPayment] = useState("290.16")
-
-  // Calculate monthly payment
-  const calculatePayment = () => {
-    try {
-      const principal = Number.parseFloat(loanAmount) - Number.parseFloat(downPayment || "0")
-      const monthlyRate = Number.parseFloat(interestRate) / 100 / 12
-      const months = Number.parseFloat(loanTerm)
-
-      if (principal <= 0 || months <= 0) {
-        setMonthlyPayment("0.00")
-        return
-      }
-
-      if (monthlyRate === 0) {
-        setMonthlyPayment((principal / months).toFixed(2))
-      } else {
-        const payment =
-          (principal * monthlyRate * Math.pow(1 + monthlyRate, months)) / (Math.pow(1 + monthlyRate, months) - 1)
-        setMonthlyPayment(payment.toFixed(2))
-      }
-    } catch (error) {
-      console.error("Calculation error:", error)
-      setMonthlyPayment("Error")
-    }
-  }
 
   // Set mounted to true after component mounts
   useEffect(() => {
     setMounted(true)
   }, [])
 
-  // Calculate payment on mount
-  useEffect(() => {
-    if (mounted) {
-      calculatePayment()
-    }
-  }, [mounted])
-
   // Show a simplified placeholder during server-side rendering
   if (!mounted) {
     return (
       <div className="flex flex-col min-h-screen">
         <div className="h-[300px] bg-muted"></div>
-        <div className="h-[600px] bg-white"></div>
+        <div className="py-12">
+          <div className="container">
+            <div className="grid gap-8 md:grid-cols-2">
+              <div className="space-y-6">
+                <div className="h-8 w-3/4 bg-muted rounded"></div>
+                <div className="h-4 w-full bg-muted rounded"></div>
+                <div className="h-4 w-full bg-muted rounded"></div>
+                <div className="h-[400px] bg-muted rounded"></div>
+              </div>
+              <div className="flex items-center justify-center">
+                <div className="h-[400px] w-full bg-muted rounded"></div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     )
   }
@@ -77,148 +54,151 @@ export default function FinancingPage() {
         </div>
       </section>
 
-      <section className="py-12 bg-white">
+      <section className="py-12">
         <div className="container">
-          <div className="p-4 mb-8 border-b border-gray-200">
-            <h2 className="text-2xl font-bold text-gray-900">FINANCING</h2>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-8 items-center">
-            <div className="flex justify-center">
+          <div className="grid gap-8 md:grid-cols-2">
+            <div>
+              <h2 className="text-3xl font-bold tracking-tight mb-4">Calculate Your Payment</h2>
+              <p className="text-muted-foreground mb-6">
+                Use our payment calculator to estimate your monthly payments based on vehicle price, down payment,
+                interest rate, and loan term.
+              </p>
+              <FinancingCalculator />
+            </div>
+            <div className="flex items-center justify-center">
               <Image
-                src="/car-finance.jpeg"
-                alt="Car financing paperwork with blue model car"
-                width={500}
-                height={350}
-                className="object-cover rounded-lg shadow-lg"
-                priority
+                src="/financing-calculator.png"
+                alt="Financing illustration"
+                width={600}
+                height={400}
+                className="rounded-lg object-cover"
               />
             </div>
-
-            <div>
-              <p className="text-gray-700 mb-6">
-                At Northwest Motors, we offer a full array of financing options to help you get into the car of your
-                dreams, regardless of your financial situation. Feel free to browse our used car inventory online,
-                schedule a test drive, submit an offer, or just stop by our dealership in person. Please fill up a
-                credit application below so we can see you current financial situation and provide you with a best
-                possible financial product at best possible rate.
-              </p>
-            </div>
           </div>
+        </div>
+      </section>
 
-          <div className="mt-8 border border-gray-300 rounded-lg p-6">
-            <p className="mb-4 text-gray-700">
-              Type in the loan amount, annual interest rate and the term of the loan in years. Then press the
-              'Calculate' button.
+      <section className="bg-muted py-12">
+        <div className="container">
+          <h2 className="text-3xl font-bold tracking-tight text-center mb-12">Financing Process</h2>
+          <FinancingSteps />
+        </div>
+      </section>
+
+      <section className="py-12">
+        <div className="container">
+          <h2 className="text-3xl font-bold tracking-tight mb-8">Financing Options</h2>
+          <div className="grid gap-6 md:grid-cols-3">
+            <Card>
+              <CardHeader>
+                <CardTitle>First-Time Buyers</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground mb-4">
+                  Special programs for first-time car buyers with limited or no credit history.
+                </p>
+                <ul className="space-y-2 mb-6">
+                  <li className="flex items-start">
+                    <span className="mr-2 text-primary">✓</span>
+                    <span>No credit history required</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="mr-2 text-primary">✓</span>
+                    <span>Competitive interest rates</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="mr-2 text-primary">✓</span>
+                    <span>Flexible down payment options</span>
+                  </li>
+                </ul>
+                <Button variant="outline" className="w-full">
+                  Learn More
+                </Button>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>Traditional Financing</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground mb-4">
+                  Conventional auto loans with competitive rates for buyers with established credit.
+                </p>
+                <ul className="space-y-2 mb-6">
+                  <li className="flex items-start">
+                    <span className="mr-2 text-primary">✓</span>
+                    <span>Low interest rates</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="mr-2 text-primary">✓</span>
+                    <span>Terms from 36-72 months</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="mr-2 text-primary">✓</span>
+                    <span>Quick approval process</span>
+                  </li>
+                </ul>
+                <Button variant="outline" className="w-full">
+                  Learn More
+                </Button>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>Credit Rebuilding</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground mb-4">
+                  Specialized financing options for customers with challenged credit histories.
+                </p>
+                <ul className="space-y-2 mb-6">
+                  <li className="flex items-start">
+                    <span className="mr-2 text-primary">✓</span>
+                    <span>All credit situations considered</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="mr-2 text-primary">✓</span>
+                    <span>Opportunity to rebuild credit</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="mr-2 text-primary">✓</span>
+                    <span>Flexible approval criteria</span>
+                  </li>
+                </ul>
+                <Button variant="outline" className="w-full">
+                  Learn More
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-12 bg-muted">
+        <div className="container">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold tracking-tight mb-4">Frequently Asked Questions</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Find answers to common questions about our financing process and options.
             </p>
+          </div>
+          <FinancingFAQ />
+        </div>
+      </section>
 
-            <div className="grid md:grid-cols-2 gap-6">
-              <div>
-                <label htmlFor="loanAmount" className="block text-sm font-medium text-gray-700 mb-1">
-                  Car Loan Amount ($):
-                </label>
-                <div className="flex">
-                  <span className="inline-flex items-center px-3 bg-gray-100 border border-r-0 border-gray-300 rounded-l-md">
-                    $
-                  </span>
-                  <Input
-                    id="loanAmount"
-                    type="text"
-                    value={loanAmount}
-                    onChange={(e) => setLoanAmount(e.target.value.replace(/[^0-9.]/g, ""))}
-                    className="rounded-l-none"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label htmlFor="interestRate" className="block text-sm font-medium text-gray-700 mb-1">
-                  Annual Interest Rate:
-                </label>
-                <div className="flex">
-                  <span className="inline-flex items-center px-3 bg-gray-100 border border-r-0 border-gray-300 rounded-l-md">
-                    %
-                  </span>
-                  <Input
-                    id="interestRate"
-                    type="text"
-                    value={interestRate}
-                    onChange={(e) => setInterestRate(e.target.value.replace(/[^0-9.]/g, ""))}
-                    className="rounded-l-none"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label htmlFor="downPayment" className="block text-sm font-medium text-gray-700 mb-1">
-                  Down Payment:
-                </label>
-                <div className="flex">
-                  <span className="inline-flex items-center px-3 bg-gray-100 border border-r-0 border-gray-300 rounded-l-md">
-                    $
-                  </span>
-                  <Input
-                    id="downPayment"
-                    type="text"
-                    value={downPayment}
-                    onChange={(e) => setDownPayment(e.target.value.replace(/[^0-9.]/g, ""))}
-                    className="rounded-l-none"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label htmlFor="loanTerm" className="block text-sm font-medium text-gray-700 mb-1">
-                  Term of Loan (Months):
-                </label>
-                <div className="flex">
-                  <span className="inline-flex items-center px-3 bg-gray-100 border border-r-0 border-gray-300 rounded-l-md">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="lucide lucide-calendar"
-                    >
-                      <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
-                      <line x1="16" x2="16" y1="2" y2="6" />
-                      <line x1="8" x2="8" y1="2" y2="6" />
-                      <line x1="3" x2="21" y1="10" y2="10" />
-                    </svg>
-                  </span>
-                  <Input
-                    id="loanTerm"
-                    type="text"
-                    value={loanTerm}
-                    onChange={(e) => setLoanTerm(e.target.value.replace(/[^0-9]/g, ""))}
-                    className="rounded-l-none"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-6">
-              <Button
-                onClick={calculatePayment}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6"
-              >
-                Calculate
+      <section className="py-12">
+        <div className="container">
+          <div className="bg-primary/10 rounded-lg p-8 text-center">
+            <h2 className="text-3xl font-bold tracking-tight mb-4">Ready to Get Started?</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto mb-6">
+              Apply for financing today and get pre-approved before you visit our dealership.
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Button size="lg">Apply Now</Button>
+              <Button variant="outline" size="lg">
+                Contact Us
               </Button>
             </div>
-
-            <div className="mt-8 text-center">
-              <h3 className="text-xl font-medium text-gray-700">Monthly Payment:</h3>
-              <p className="text-3xl font-bold text-blue-600">${monthlyPayment}</p>
-            </div>
-          </div>
-
-          <div className="mt-12">
-            <CreditApplicationForm />
           </div>
         </div>
       </section>
