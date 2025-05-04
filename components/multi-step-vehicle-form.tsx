@@ -1554,7 +1554,7 @@ export function MultiStepVehicleForm() {
                   {expandedSection !== 2 && currentStep >= 2 ? (
                     <span
                       className="text-sm text-primary underline flex items-center cursor-pointer"
-                      onClick={() => setExpandedSection(2)}
+                      onClick={() => setExpandedSection(1)}
                     >
                       Edit <Pencil className="h-3 w-3 ml-1" />
                     </span>

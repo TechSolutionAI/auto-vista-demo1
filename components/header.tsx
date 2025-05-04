@@ -9,7 +9,6 @@ import { Logo } from "./logo"
 import { useLanguage } from "@/contexts/language-context"
 import { cn } from "@/lib/utils"
 import { usePathname } from "next/navigation"
-import { Phone } from "lucide-react"
 
 export function Header() {
   const { t } = useLanguage()
@@ -46,12 +45,15 @@ export function Header() {
     setMounted(true)
   }, [])
 
+  // Determine if we should use light text (for transparent header on homepage)
+  const useLightText = !scrolled && isHomePage
+
   return (
     <header
       className={cn(
         "fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300",
         scrolled
-          ? "bg-darkgray/95 backdrop-blur supports-[backdrop-filter]:bg-darkgray/60 border-b border-border"
+          ? "bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border"
           : "bg-transparent",
       )}
     >
@@ -64,48 +66,70 @@ export function Header() {
         <nav className="hidden md:flex items-center gap-6">
           <Link
             href="/"
-            className="text-sm font-medium transition-colors uppercase tracking-wider text-white hover:text-gold"
+            className={cn(
+              "text-sm font-medium transition-colors uppercase tracking-wider",
+              useLightText ? "text-white hover:text-white/80" : "hover:text-primary",
+            )}
           >
             {mounted ? t("common.home") : "Home"}
           </Link>
           <Link
             href="/inventory"
-            className="text-sm font-medium transition-colors uppercase tracking-wider text-white hover:text-gold"
+            className={cn(
+              "text-sm font-medium transition-colors uppercase tracking-wider",
+              useLightText ? "text-white hover:text-white/80" : "hover:text-primary",
+            )}
           >
-            {mounted ? t("common.inventory") : "Browse Vehicles"}
+            {mounted ? t("common.inventory") : "Inventory"}
           </Link>
           <Link
             href="/financing"
-            className="text-sm font-medium transition-colors uppercase tracking-wider text-white hover:text-gold"
+            className={cn(
+              "text-sm font-medium transition-colors uppercase tracking-wider",
+              useLightText ? "text-white hover:text-white/80" : "hover:text-primary",
+            )}
           >
             {mounted ? t("common.financing") : "Financing"}
           </Link>
           <Link
             href="/service"
-            className="text-sm font-medium transition-colors uppercase tracking-wider text-white hover:text-gold"
+            className={cn(
+              "text-sm font-medium transition-colors uppercase tracking-wider",
+              useLightText ? "text-white hover:text-white/80" : "hover:text-primary",
+            )}
           >
-            {mounted ? t("common.service") : "Services"}
+            {mounted ? t("common.service") : "Service"}
           </Link>
           <Link
             href="/sell"
-            className="text-sm font-medium transition-colors uppercase tracking-wider text-white hover:text-gold"
+            className={cn(
+              "text-sm font-medium transition-colors uppercase tracking-wider",
+              useLightText ? "text-white hover:text-white/80" : "hover:text-primary",
+            )}
           >
-            {mounted ? t("common.sell") : "Sell your car"}
+            {mounted ? t("common.sell") : "Sell"}
           </Link>
           <Link
             href="/contact"
-            className="text-sm font-medium transition-colors uppercase tracking-wider text-white hover:text-gold"
+            className={cn(
+              "text-sm font-medium transition-colors uppercase tracking-wider",
+              useLightText ? "text-white hover:text-white/80" : "hover:text-primary",
+            )}
           >
             {mounted ? t("common.contact") : "Contact"}
           </Link>
         </nav>
         <div className="flex items-center gap-2">
-          <Link href="tel:+18888702148" className="hidden md:flex items-center gap-2 text-white hover:text-gold">
-            <Phone className="h-4 w-4" />
-            <span className="text-sm">Call</span>
-          </Link>
-          <LanguageSwitcher className="border-gold/20 bg-transparent text-white hover:bg-gold/10 hover:text-gold" />
-          <ThemeToggle className="border-gold/20 bg-transparent text-white hover:bg-gold/10 hover:text-gold" />
+          <LanguageSwitcher
+            className={
+              useLightText ? "border-white/20 bg-transparent text-white hover:bg-white/10 hover:text-white" : ""
+            }
+          />
+         <ThemeToggle
+            className={
+              useLightText ? "border-white/20 bg-transparent text-white hover:bg-white/10 hover:text-white" : ""
+            }
+          />
           <MobileNav />
         </div>
       </div>

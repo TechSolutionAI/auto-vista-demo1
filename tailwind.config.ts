@@ -53,11 +53,6 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // Dutton One specific colors
-        gold: "#D4AF37",
-        darkgray: "#1A1A1A",
-        charcoal: "#2A2A2A",
-        lightgray: "#E5E5E5",
       },
       borderRadius: {
         lg: "var(--radius)",

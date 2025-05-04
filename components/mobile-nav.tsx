@@ -112,10 +112,10 @@ export function MobileNav() {
           >
             {mounted ? t("common.contact") : "Contact"}
           </Link>
-          <div className="flex items-center mt-4">
+          /* <div className="flex items-center mt-4">
             <span className="text-sm mr-2">{mounted ? t("common.theme") : "Theme"}:</span>
             <ThemeToggle />
-          </div>
+          </div> */
           <div className="flex items-center mt-2">
             <span className="text-sm mr-2">{mounted ? t("common.language") : "Language"}:</span>
             <LanguageSwitcher />
